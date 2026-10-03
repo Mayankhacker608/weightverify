@@ -15,7 +15,7 @@ Create a `.env` file using `.env.example` with the following required values:
 PORT=5000
 MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/e-metrology
 JWT_SECRET=replace-with-a-secure-secret
-FRONTEND_URL=http://localhost:3000
+FRONTEND_URL=https://weightverify.onrender.com
 SMTP_HOST=smtp.example.com
 SMTP_PORT=587
 SMTP_USER=user@example.com

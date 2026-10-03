@@ -2,7 +2,7 @@
 
 ## Base URL
 
-`http://localhost:5000`
+`https://weightverify.onrender.com`
 
 ## Authentication
 

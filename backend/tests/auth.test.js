@@ -68,11 +68,11 @@ describe("Authentication APIs", () => {
   it("allows a localhost frontend preview origin", async () => {
     const response = await request(app)
       .get("/health")
-      .set("Origin", "http://localhost:5500");
+      .set("Origin", "https://weightverify.onrender.com");
 
     expect(response.statusCode).toBe(200);
     expect(response.headers["access-control-allow-origin"]).toBe(
-      "http://localhost:5500",
+      "https://weightverify.onrender.com",
     );
   });
 

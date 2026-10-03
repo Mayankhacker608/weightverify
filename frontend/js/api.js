@@ -1,4 +1,8 @@
-const localHosts = ["localhost", "127.0.0.1"];
+const localHosts = [
+  "https://weightverify.onrender.com",
+  "localhost",
+  "127.0.0.1",
+];
 const isSeparateLocalFrontend =
   localHosts.includes(window.location.hostname) &&
   window.location.port !== "" &&
