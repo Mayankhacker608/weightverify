@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Applications | e-Metrology</title>
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body class="app-shell">
+    <aside class="sidebar">
+      <div class="brand-panel">
+        <div class="brand-mark">e</div>
+        <div><strong>e-Metrology</strong><small>Citizen service</small></div>
+      </div>
+      <nav class="nav-list" aria-label="Dashboard navigation">
+        <a href="./dashboard.html" class="nav-link" data-i18n="nav.dashboard"
+          >Dashboard</a
+        >
+        <a
+          href="./instruments.html"
+          class="nav-link"
+          data-i18n="nav.instruments"
+          >Instruments</a
+        >
+        <a
+          href="./applications.html"
+          class="nav-link active"
+          data-i18n="nav.applications"
+          >Applications</a
+        >
+        <a href="./verify.html" class="nav-link" data-i18n="nav.verify"
+          >Verify Certificate</a
+        >
+        <button
+          id="logoutBtn"
+          class="nav-link nav-button"
+          data-i18n="nav.logout"
+        >
+          Logout
+        </button>
+      </nav>
+    </aside>
+
+    <main class="main-panel">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">User workspace</p>
+          <h2 data-i18n="application.title">Verification applications</h2>
+        </div>
+        <span id="userNameBadge" class="badge"></span>
+      </header>
+      <section class="card panel-card">
+        <div class="section-head">
+          <h3 data-i18n="application.start">Start a verification</h3>
+        </div>
+        <form id="applicationForm" class="form-grid two-up">
+          <div class="field-group">
+            <label
+              for="applicationInstrument"
+              data-i18n="application.instrument"
+              >Instrument</label
+            ><select id="applicationInstrument" required></select>
+          </div>
+          <div class="field-group">
+            <label for="applicationType" data-i18n="application.type"
+              >Request type</label
+            ><select id="applicationType" required>
+              <option>Initial Verification</option>
+              <option>Re-Verification</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label for="preferredDate" data-i18n="application.date"
+              >Preferred date</label
+            ><input id="preferredDate" type="date" />
+          </div>
+          <div class="field-group full-width">
+            <label for="remarks" data-i18n="application.remarks"
+              >Additional information</label
+            ><textarea id="remarks" rows="3" maxlength="1000"></textarea>
+          </div>
+          <button class="btn btn-primary full-width" type="submit">
+            <span data-i18n="application.submit">Submit application</span>
+          </button>
+        </form>
+        <div
+          id="applicationMessage"
+          class="alert hidden"
+          aria-live="polite"
+        ></div>
+      </section>
+
+      <section class="card panel-card workflow-section">
+        <div class="section-head">
+          <h3 data-i18n="application.history">Application history</h3>
+        </div>
+        <div id="applicationList" class="application-list"></div>
+        <p id="applicationEmpty" class="field-help hidden">
+          No applications yet. Register an instrument to begin.
+        </p>
+      </section>
+    </main>
+    <script src="./js/i18n.js"></script>
+    <script src="./js/api.js"></script>
+    <script src="./js/auth.js"></script>
+    <script src="./js/workflows.js"></script>
+  </body>
+</html>

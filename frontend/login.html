@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | e-Metrology</title>
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body class="auth-body">
+    <main class="auth-screen">
+      <section class="card auth-card">
+        <div class="auth-header">
+          <p class="section-tag" data-i18n="auth.secureAccess">Secure access</p>
+          <h1 data-i18n="auth.loginTitle">Login</h1>
+          <p data-i18n="auth.loginDescription">
+            Access your verification dashboard and certificate records.
+          </p>
+        </div>
+
+        <form id="loginForm" class="form-grid">
+          <div class="field-group">
+            <label for="email" data-i18n="form.email">Email address</label>
+            <input
+              id="email"
+              type="email"
+              placeholder="name@example.com"
+              required
+            />
+          </div>
+          <div class="field-group">
+            <label for="password" data-i18n="form.password">Password</label>
+            <input
+              id="password"
+              type="password"
+              placeholder="Enter your password"
+              required
+            />
+          </div>
+          <div class="field-group full-width">
+            <label for="adminAccessKey"
+              >Administrator access key (administrators only)</label
+            >
+            <input
+              id="adminAccessKey"
+              type="password"
+              autocomplete="off"
+              placeholder="Leave blank for user and staff accounts"
+            />
+          </div>
+          <button type="submit" class="btn btn-primary full-width">
+            <span data-i18n="common.login">Login</span>
+          </button>
+        </form>
+
+        <div id="loginMessage" class="alert hidden" aria-live="polite"></div>
+
+        <p class="auth-link">
+          New user?
+          <a href="./register.html">Register here</a>
+        </p>
+      </section>
+      <section
+        id="staffDocumentsCard"
+        class="card auth-card staff-documents hidden"
+        aria-labelledby="staffDocumentsTitle"
+      >
+        <div class="auth-header">
+          <p class="section-tag">Pending approval</p>
+          <h2 id="staffDocumentsTitle">Upload verification documents</h2>
+          <p>
+            Your account remains pending until an administrator reviews the
+            required documents.
+          </p>
+        </div>
+        <form id="staffDocumentForm" class="form-grid">
+          <div class="field-group">
+            <label for="staffDocumentType">Document type</label>
+            <select id="staffDocumentType" required></select>
+          </div>
+          <div class="field-group">
+            <label for="staffDocumentFiles">PDF, JPEG, or PNG files</label>
+            <input
+              id="staffDocumentFiles"
+              type="file"
+              accept="application/pdf,image/jpeg,image/png"
+              multiple
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-primary">
+            Upload documents
+          </button>
+        </form>
+        <div
+          id="staffDocumentMessage"
+          class="alert hidden"
+          aria-live="polite"
+        ></div>
+      </section>
+    </main>
+
+    <script src="./js/i18n.js"></script>
+    <script src="./js/api.js"></script>
+    <script src="./js/auth.js"></script>
+  </body>
+</html>

@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | e-Metrology</title>
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body class="app-shell">
+    <aside class="sidebar">
+      <div class="brand-panel">
+        <div class="brand-mark">e</div>
+        <div>
+          <strong>e-Metrology</strong>
+          <small>Citizen service</small>
+        </div>
+      </div>
+      <nav class="nav-list" aria-label="Dashboard navigation">
+        <a
+          href="./dashboard.html"
+          class="nav-link active"
+          data-i18n="nav.dashboard"
+          >Dashboard</a
+        >
+        <a
+          href="./instruments.html"
+          class="nav-link"
+          data-i18n="nav.instruments"
+          >Instruments</a
+        >
+        <a
+          href="./applications.html"
+          class="nav-link"
+          data-i18n="nav.applications"
+          >Applications</a
+        >
+        <a href="./verify.html" class="nav-link" data-i18n="nav.verify"
+          >Verify Certificate</a
+        >
+        <button
+          id="logoutBtn"
+          class="nav-link nav-button"
+          data-i18n="nav.logout"
+        >
+          Logout
+        </button>
+      </nav>
+    </aside>
+
+    <main class="main-panel">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow" data-i18n="dashboard.operations">
+            Operations dashboard
+          </p>
+          <h2 data-i18n="dashboard.welcome">Welcome back</h2>
+        </div>
+        <span id="userNameBadge" class="badge">Loading profile...</span>
+      </header>
+
+      <section class="summary-grid">
+        <article class="stat-card">
+          <span class="label" data-i18n="dashboard.instruments"
+            >Registered instruments</span
+          >
+          <strong id="statInstruments">0</strong>
+        </article>
+        <article class="stat-card">
+          <span class="label" data-i18n="dashboard.applications"
+            >Applications</span
+          >
+          <strong id="statApplications">0</strong>
+        </article>
+        <article class="stat-card warning">
+          <span class="label" data-i18n="dashboard.pending"
+            >Pending review</span
+          >
+          <strong id="statPending">0</strong>
+        </article>
+        <article class="stat-card success">
+          <span class="label" data-i18n="dashboard.certificates"
+            >Valid certificates</span
+          >
+          <strong id="statCertificates">0</strong>
+        </article>
+      </section>
+      <div id="dashboardMessage" class="alert hidden" aria-live="polite"></div>
+
+      <section class="content-grid">
+        <article class="card panel-card">
+          <div class="section-head">
+            <h3 data-i18n="dashboard.applicationStatus">Application status</h3>
+          </div>
+          <div
+            id="statusChart"
+            class="status-chart"
+            role="group"
+            aria-label="Applications by status"
+          ></div>
+        </article>
+        <article class="card panel-card">
+          <div class="section-head">
+            <h3 data-i18n="dashboard.recentActivity">Recent activity</h3>
+          </div>
+          <ul id="activityList" class="activity-list"></ul>
+        </article>
+      </section>
+
+      <section class="card panel-card workflow-section">
+        <div class="section-head">
+          <h3 data-i18n="dashboard.myCertificates">My certificates</h3>
+        </div>
+        <div id="certificateList" class="certificate-list"></div>
+        <p id="certificateEmpty" class="field-help hidden">
+          No certificates issued yet.
+        </p>
+      </section>
+
+      <section class="card panel-card workflow-section">
+        <div class="section-head">
+          <h3>Notifications</h3>
+          <span id="unreadNotificationCount" class="badge">0 unread</span>
+        </div>
+        <ul id="notificationList" class="activity-list"></ul>
+        <p id="notificationEmpty" class="field-help hidden">
+          No notifications yet.
+        </p>
+      </section>
+
+      <section
+        id="staffWorkspace"
+        class="staff-workspace hidden"
+        aria-labelledby="staffWorkspaceTitle"
+      >
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Authorized field work</p>
+            <h2 id="staffWorkspaceTitle">Assigned work</h2>
+          </div>
+        </div>
+        <div id="staffQueue" class="application-list"></div>
+        <p id="staffQueueEmpty" class="field-help hidden">
+          No assigned work is waiting for you.
+        </p>
+        <div
+          id="staffWorkspaceMessage"
+          class="alert hidden"
+          aria-live="polite"
+        ></div>
+      </section>
+
+      <section
+        id="adminTools"
+        class="admin-workspace hidden"
+        aria-labelledby="adminToolsTitle"
+      >
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Administration</p>
+            <h2 id="adminToolsTitle">Staff onboarding</h2>
+          </div>
+        </div>
+        <div class="admin-columns">
+          <section class="admin-section">
+            <h3>Create invitation key</h3>
+            <form id="invitationForm" class="form-grid two-up">
+              <div class="field-group">
+                <label for="invitationRole">Staff role</label>
+                <select id="invitationRole" required>
+                  <option value="LMO">LMO officer</option>
+                  <option value="GATC">GATC organization</option>
+                </select>
+              </div>
+              <div class="field-group">
+                <label for="invitationOrganization"
+                  >Organization (optional)</label
+                >
+                <input id="invitationOrganization" maxlength="160" />
+              </div>
+              <div class="field-group">
+                <label for="invitationState">State (optional)</label>
+                <input id="invitationState" maxlength="100" />
+              </div>
+              <div class="field-group">
+                <label for="invitationDistrict">District (optional)</label>
+                <input id="invitationDistrict" maxlength="100" />
+              </div>
+              <button type="submit" class="btn btn-primary full-width">
+                Generate one-time key
+              </button>
+            </form>
+            <div
+              id="invitationMessage"
+              class="alert hidden"
+              aria-live="polite"
+            ></div>
+            <h3 class="admin-subheading">Issued keys</h3>
+            <ul id="invitationList" class="activity-list"></ul>
+          </section>
+          <section class="admin-section">
+            <h3>Pending staff applications</h3>
+            <ul id="pendingStaffList" class="activity-list"></ul>
+          </section>
+          <section class="admin-section admin-applications-section">
+            <h3>Application review and assignment</h3>
+            <ul id="adminApplicationsList" class="activity-list"></ul>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <script src="./js/i18n.js"></script>
+    <script src="./js/api.js"></script>
+    <script src="./js/auth.js"></script>
+    <script src="./js/dashboard.js"></script>
+  </body>
+</html>

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Certificate Verification | e-Metrology</title>
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body class="auth-body">
+    <main class="auth-screen">
+      <section class="card auth-card verify-card">
+        <div class="auth-header center">
+          <p class="section-tag">Public verification</p>
+          <h1 data-i18n="certificate.verify">Verify certificate</h1>
+        </div>
+
+        <div class="field-group">
+          <label for="certificateNumber">Certificate number</label>
+          <input
+            id="certificateNumber"
+            type="text"
+            placeholder="Enter certificate number"
+          />
+        </div>
+        <button id="verifyButton" class="btn btn-primary full-width">
+          <span data-i18n="common.verify">Verify</span>
+        </button>
+
+        <div id="verifyResult" class="alert hidden" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <script src="./js/i18n.js"></script>
+    <script src="./js/api.js"></script>
+    <script src="./js/verify.js"></script>
+  </body>
+</html>

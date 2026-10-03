@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register | e-Metrology</title>
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body class="auth-body">
+    <main class="auth-screen">
+      <section class="card auth-card wide">
+        <div class="auth-header center">
+          <p class="section-tag" data-i18n="auth.registerEyebrow">
+            Professional registration
+          </p>
+          <h1 data-i18n="auth.registerTitle">Create account</h1>
+        </div>
+
+        <form id="registerForm" class="form-grid two-up">
+          <div class="field-group">
+            <label for="name" data-i18n="form.fullName">Full name</label>
+            <input id="name" required />
+          </div>
+          <div class="field-group">
+            <label for="email" data-i18n="form.email">Email address</label>
+            <input id="email" type="email" required />
+          </div>
+          <div class="field-group">
+            <label for="phone" data-i18n="form.phone">Mobile number</label>
+            <input id="phone" required />
+          </div>
+          <div class="field-group">
+            <label for="organization" data-i18n="form.organization"
+              >Organization</label
+            >
+            <input id="organization" required />
+          </div>
+          <div class="field-group">
+            <label for="state" data-i18n="form.state">State</label>
+            <input id="state" required />
+          </div>
+          <div class="field-group">
+            <label for="district" data-i18n="form.district">District</label>
+            <input id="district" required />
+          </div>
+          <div class="field-group full-width">
+            <label for="address" data-i18n="form.address">Address</label>
+            <textarea id="address" rows="3" required></textarea>
+          </div>
+          <div class="field-group">
+            <label for="password" data-i18n="form.password">Password</label>
+            <input id="password" type="password" required />
+          </div>
+          <div class="field-group">
+            <label for="accountType" data-i18n="form.accountType"
+              >Account type</label
+            >
+            <select id="accountType">
+              <option value="USER" data-i18n="form.businessUser">
+                Business / individual
+              </option>
+              <option value="LMO" data-i18n="form.lmo">LMO officer</option>
+              <option value="GATC" data-i18n="form.gatc">
+                GATC organization
+              </option>
+            </select>
+          </div>
+          <div id="staffFields" class="full-width form-grid" hidden>
+            <div class="field-group">
+              <label for="invitationKey" data-i18n="form.invitationKey"
+                >Special registration key</label
+              >
+              <input id="invitationKey" autocomplete="off" />
+            </div>
+            <div id="lmoFields" class="form-grid two-up">
+              <div class="field-group">
+                <label for="designation" data-i18n="form.designation"
+                  >Official designation</label
+                >
+                <input id="designation" />
+              </div>
+              <div class="field-group">
+                <label for="employeeId" data-i18n="form.employeeId"
+                  >Employee / officer ID</label
+                >
+                <input id="employeeId" />
+              </div>
+            </div>
+            <div id="gatcFields" class="field-group" hidden>
+              <label
+                for="authorizationNumber"
+                data-i18n="form.authorizationNumber"
+                >Authorization number</label
+              >
+              <input id="authorizationNumber" />
+            </div>
+            <p class="field-help full-width">
+              Staff accounts require an administrator-issued key and remain
+              pending until documents are reviewed and approved.
+            </p>
+          </div>
+          <button type="submit" class="btn btn-primary full-width">
+            <span data-i18n="common.createAccount">Create account</span>
+          </button>
+        </form>
+
+        <div id="registerMessage" class="alert hidden" aria-live="polite"></div>
+        <p class="auth-link">
+          Already registered? <a href="./login.html">Login</a>
+        </p>
+      </section>
+      <section
+        id="staffDocumentsCard"
+        class="card auth-card staff-documents hidden"
+        aria-labelledby="staffDocumentsTitle"
+      >
+        <div class="auth-header">
+          <p class="section-tag">Pending approval</p>
+          <h2 id="staffDocumentsTitle">Upload verification documents</h2>
+          <p>
+            Your account remains pending until an administrator reviews the
+            required documents.
+          </p>
+        </div>
+        <form id="staffDocumentForm" class="form-grid">
+          <div class="field-group">
+            <label for="staffDocumentType">Document type</label>
+            <select id="staffDocumentType" required></select>
+          </div>
+          <div class="field-group">
+            <label for="staffDocumentFiles">PDF, JPEG, or PNG files</label>
+            <input
+              id="staffDocumentFiles"
+              type="file"
+              accept="application/pdf,image/jpeg,image/png"
+              multiple
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-primary">
+            Upload documents
+          </button>
+        </form>
+        <div
+          id="staffDocumentMessage"
+          class="alert hidden"
+          aria-live="polite"
+        ></div>
+      </section>
+    </main>
+
+    <script src="./js/i18n.js"></script>
+    <script src="./js/api.js"></script>
+    <script src="./js/auth.js"></script>
+  </body>
+</html>

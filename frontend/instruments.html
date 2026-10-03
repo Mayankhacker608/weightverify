@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Instruments | e-Metrology</title>
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body class="app-shell">
+    <aside class="sidebar">
+      <div class="brand-panel">
+        <div class="brand-mark">e</div>
+        <div><strong>e-Metrology</strong><small>Citizen service</small></div>
+      </div>
+      <nav class="nav-list" aria-label="Dashboard navigation">
+        <a href="./dashboard.html" class="nav-link" data-i18n="nav.dashboard"
+          >Dashboard</a
+        >
+        <a
+          href="./instruments.html"
+          class="nav-link active"
+          data-i18n="nav.instruments"
+          >Instruments</a
+        >
+        <a
+          href="./applications.html"
+          class="nav-link"
+          data-i18n="nav.applications"
+          >Applications</a
+        >
+        <a href="./verify.html" class="nav-link" data-i18n="nav.verify"
+          >Verify Certificate</a
+        >
+        <button
+          id="logoutBtn"
+          class="nav-link nav-button"
+          data-i18n="nav.logout"
+        >
+          Logout
+        </button>
+      </nav>
+    </aside>
+
+    <main class="main-panel">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">User workspace</p>
+          <h2 data-i18n="instrument.title">Instruments</h2>
+        </div>
+        <span id="userNameBadge" class="badge"></span>
+      </header>
+      <section class="card panel-card">
+        <div class="section-head">
+          <h3 data-i18n="instrument.register">Register an instrument</h3>
+        </div>
+        <form id="instrumentForm" class="form-grid two-up">
+          <div class="field-group">
+            <label for="type" data-i18n="instrument.type">Instrument type</label
+            ><input id="type" required maxlength="120" />
+          </div>
+          <div class="field-group">
+            <label for="category" data-i18n="instrument.category"
+              >Category</label
+            ><select id="category" required>
+              <option value="">Select category</option>
+              <option>Weight</option>
+              <option>Measure</option>
+              <option>Volume</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label for="manufacturer" data-i18n="instrument.manufacturer"
+              >Manufacturer</label
+            ><input id="manufacturer" required maxlength="120" />
+          </div>
+          <div class="field-group">
+            <label for="model" data-i18n="instrument.model">Model</label
+            ><input id="model" required maxlength="120" />
+          </div>
+          <div class="field-group">
+            <label for="serialNumber" data-i18n="instrument.serialNumber"
+              >Serial number</label
+            ><input id="serialNumber" required maxlength="120" />
+          </div>
+          <div class="field-group">
+            <label for="capacity">Capacity</label
+            ><input id="capacity" maxlength="80" />
+          </div>
+          <div class="field-group">
+            <label for="accuracy">Accuracy / class</label
+            ><input id="accuracy" maxlength="80" />
+          </div>
+          <div class="field-group">
+            <label for="location" data-i18n="instrument.location"
+              >Installation location</label
+            ><input id="location" required maxlength="200" />
+          </div>
+          <div class="field-group">
+            <label for="purchaseDate">Purchase date</label
+            ><input id="purchaseDate" type="date" />
+          </div>
+          <div class="full-width">
+            <button class="btn btn-primary" type="submit">
+              <span data-i18n="instrument.submit">Register instrument</span>
+            </button>
+          </div>
+        </form>
+        <div
+          id="instrumentMessage"
+          class="alert hidden"
+          aria-live="polite"
+        ></div>
+      </section>
+
+      <section class="card panel-card workflow-section">
+        <div class="section-head">
+          <h3 data-i18n="instrument.registered">My instruments</h3>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Instrument ID</th>
+                <th>Type</th>
+                <th>Serial number</th>
+                <th>Location</th>
+                <th>Status</th>
+                <th>Photos / documents</th>
+              </tr>
+            </thead>
+            <tbody id="instrumentRows"></tbody>
+          </table>
+        </div>
+        <p id="instrumentEmpty" class="field-help hidden">
+          No instruments registered yet.
+        </p>
+      </section>
+
+      <section class="card panel-card workflow-section">
+        <div class="section-head">
+          <h3 data-i18n="instrument.photos">Upload instrument evidence</h3>
+        </div>
+        <form id="instrumentUploadForm" class="form-grid two-up">
+          <div class="field-group">
+            <label for="uploadInstrument">Instrument</label
+            ><select id="uploadInstrument" required></select>
+          </div>
+          <div class="field-group">
+            <label for="photoType">Photo view</label
+            ><select id="photoType">
+              <option value="FRONT">Front</option>
+              <option value="BACK">Back</option>
+              <option value="SIDE">Side</option>
+              <option value="SERIAL_PLATE">Serial number / nameplate</option>
+              <option value="LOCATION">Installation / location</option>
+              <option value="ADDITIONAL">Additional evidence</option>
+            </select>
+          </div>
+          <div class="field-group full-width">
+            <label for="instrumentFiles"
+              >JPEG, PNG, or PDF (up to 5 files, 5 MB each)</label
+            ><input
+              id="instrumentFiles"
+              type="file"
+              accept="image/jpeg,image/png,application/pdf"
+              multiple
+              required
+            />
+            <div
+              id="photoPreview"
+              class="photo-preview"
+              aria-live="polite"
+            ></div>
+          </div>
+          <button class="btn btn-primary full-width" type="submit">
+            Upload evidence
+          </button>
+        </form>
+        <div id="uploadMessage" class="alert hidden" aria-live="polite"></div>
+      </section>
+    </main>
+    <script src="./js/i18n.js"></script>
+    <script src="./js/api.js"></script>
+    <script src="./js/auth.js"></script>
+    <script src="./js/workflows.js"></script>
+  </body>
+</html>
