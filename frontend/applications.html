@@ -1,16 +1,32 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f3f8ff" />
     <title>Applications | e-Metrology</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
     <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="./css/app-theme.css" />
+    <script src="./js/theme.js"></script>
   </head>
-  <body class="app-shell">
+  <body class="app-shell dash">
     <aside class="sidebar">
       <div class="brand-panel">
         <div class="brand-mark">e</div>
-        <div><strong>e-Metrology</strong><small>Citizen service</small></div>
+        <div>
+          <strong>e-Metrology</strong
+          ><small data-i18n="brand.service">Citizen service</small>
+        </div>
       </div>
       <nav class="nav-list" aria-label="Dashboard navigation">
         <a href="./dashboard.html" class="nav-link" data-i18n="nav.dashboard"
@@ -25,6 +41,7 @@
         <a
           href="./applications.html"
           class="nav-link active"
+          aria-current="page"
           data-i18n="nav.applications"
           >Applications</a
         >
@@ -44,11 +61,23 @@
     <main class="main-panel">
       <header class="topbar">
         <div>
-          <p class="eyebrow">User workspace</p>
+          <p class="eyebrow" data-i18n="workspace.user">User workspace</p>
           <h2 data-i18n="application.title">Verification applications</h2>
         </div>
-        <span id="userNameBadge" class="badge"></span>
+        <div class="top-actions">
+          <button
+            type="button"
+            class="icon-btn"
+            id="themeToggle"
+            data-i18n-aria-label="theme.toggle"
+            aria-label="Toggle light and dark theme"
+          >
+            <i class="fa-solid fa-circle-half-stroke"></i>
+          </button>
+          <span id="userNameBadge" class="badge"></span>
+        </div>
       </header>
+
       <section class="card panel-card">
         <div class="section-head">
           <h3 data-i18n="application.start">Start a verification</h3>
@@ -59,25 +88,39 @@
               for="applicationInstrument"
               data-i18n="application.instrument"
               >Instrument</label
-            ><select id="applicationInstrument" required></select>
+            >
+            <select id="applicationInstrument" required></select>
           </div>
           <div class="field-group">
             <label for="applicationType" data-i18n="application.type"
               >Request type</label
-            ><select id="applicationType" required>
-              <option>Initial Verification</option>
-              <option>Re-Verification</option>
+            >
+            <select id="applicationType" required>
+              <option
+                value="Initial Verification"
+                data-i18n="application.initial"
+              >
+                Initial Verification
+              </option>
+              <option
+                value="Re-Verification"
+                data-i18n="application.reverification"
+              >
+                Re-Verification
+              </option>
             </select>
           </div>
           <div class="field-group">
             <label for="preferredDate" data-i18n="application.date"
               >Preferred date</label
-            ><input id="preferredDate" type="date" />
+            >
+            <input id="preferredDate" type="date" />
           </div>
           <div class="field-group full-width">
             <label for="remarks" data-i18n="application.remarks"
               >Additional information</label
-            ><textarea id="remarks" rows="3" maxlength="1000"></textarea>
+            >
+            <textarea id="remarks" rows="3" maxlength="1000"></textarea>
           </div>
           <button class="btn btn-primary full-width" type="submit">
             <span data-i18n="application.submit">Submit application</span>
@@ -95,7 +138,11 @@
           <h3 data-i18n="application.history">Application history</h3>
         </div>
         <div id="applicationList" class="application-list"></div>
-        <p id="applicationEmpty" class="field-help hidden">
+        <p
+          id="applicationEmpty"
+          class="field-help hidden"
+          data-i18n="application.empty"
+        >
           No applications yet. Register an instrument to begin.
         </p>
       </section>

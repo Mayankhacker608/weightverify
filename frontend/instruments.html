@@ -1,16 +1,32 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f3f8ff" />
     <title>Instruments | e-Metrology</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
     <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="./css/app-theme.css" />
+    <script src="./js/theme.js"></script>
   </head>
-  <body class="app-shell">
+  <body class="app-shell dash">
     <aside class="sidebar">
       <div class="brand-panel">
         <div class="brand-mark">e</div>
-        <div><strong>e-Metrology</strong><small>Citizen service</small></div>
+        <div>
+          <strong>e-Metrology</strong
+          ><small data-i18n="brand.service">Citizen service</small>
+        </div>
       </div>
       <nav class="nav-list" aria-label="Dashboard navigation">
         <a href="./dashboard.html" class="nav-link" data-i18n="nav.dashboard"
@@ -19,6 +35,7 @@
         <a
           href="./instruments.html"
           class="nav-link active"
+          aria-current="page"
           data-i18n="nav.instruments"
           >Instruments</a
         >
@@ -44,61 +61,89 @@
     <main class="main-panel">
       <header class="topbar">
         <div>
-          <p class="eyebrow">User workspace</p>
+          <p class="eyebrow" data-i18n="workspace.user">User workspace</p>
           <h2 data-i18n="instrument.title">Instruments</h2>
         </div>
-        <span id="userNameBadge" class="badge"></span>
+        <div class="top-actions">
+          <button
+            type="button"
+            class="icon-btn"
+            id="themeToggle"
+            data-i18n-aria-label="theme.toggle"
+            aria-label="Toggle light and dark theme"
+          >
+            <i class="fa-solid fa-circle-half-stroke"></i>
+          </button>
+          <span id="userNameBadge" class="badge"></span>
+        </div>
       </header>
+
       <section class="card panel-card">
         <div class="section-head">
           <h3 data-i18n="instrument.register">Register an instrument</h3>
         </div>
         <form id="instrumentForm" class="form-grid two-up">
           <div class="field-group">
-            <label for="type" data-i18n="instrument.type">Instrument type</label
-            ><input id="type" required maxlength="120" />
+            <label for="type" data-i18n="instrument.type"
+              >Instrument type</label
+            >
+            <input id="type" required maxlength="120" />
           </div>
           <div class="field-group">
             <label for="category" data-i18n="instrument.category"
               >Category</label
-            ><select id="category" required>
-              <option value="">Select category</option>
-              <option>Weight</option>
-              <option>Measure</option>
-              <option>Volume</option>
-              <option>Other</option>
+            >
+            <select id="category" required>
+              <option value="" data-i18n="instrument.selectCategory">
+                Select category
+              </option>
+              <option value="Weight" data-i18n="category.weight">Weight</option>
+              <option value="Measure" data-i18n="category.measure">
+                Measure
+              </option>
+              <option value="Volume" data-i18n="category.volume">Volume</option>
+              <option value="Other" data-i18n="category.other">Other</option>
             </select>
           </div>
           <div class="field-group">
             <label for="manufacturer" data-i18n="instrument.manufacturer"
               >Manufacturer</label
-            ><input id="manufacturer" required maxlength="120" />
+            >
+            <input id="manufacturer" required maxlength="120" />
           </div>
           <div class="field-group">
-            <label for="model" data-i18n="instrument.model">Model</label
-            ><input id="model" required maxlength="120" />
+            <label for="model" data-i18n="instrument.model">Model</label>
+            <input id="model" required maxlength="120" />
           </div>
           <div class="field-group">
             <label for="serialNumber" data-i18n="instrument.serialNumber"
               >Serial number</label
-            ><input id="serialNumber" required maxlength="120" />
+            >
+            <input id="serialNumber" required maxlength="120" />
           </div>
           <div class="field-group">
-            <label for="capacity">Capacity</label
-            ><input id="capacity" maxlength="80" />
+            <label for="capacity" data-i18n="instrument.capacity"
+              >Capacity</label
+            >
+            <input id="capacity" maxlength="80" />
           </div>
           <div class="field-group">
-            <label for="accuracy">Accuracy / class</label
-            ><input id="accuracy" maxlength="80" />
+            <label for="accuracy" data-i18n="instrument.accuracy"
+              >Accuracy / class</label
+            >
+            <input id="accuracy" maxlength="80" />
           </div>
           <div class="field-group">
             <label for="location" data-i18n="instrument.location"
               >Installation location</label
-            ><input id="location" required maxlength="200" />
+            >
+            <input id="location" required maxlength="200" />
           </div>
           <div class="field-group">
-            <label for="purchaseDate">Purchase date</label
-            ><input id="purchaseDate" type="date" />
+            <label for="purchaseDate" data-i18n="instrument.purchaseDate"
+              >Purchase date</label
+            >
+            <input id="purchaseDate" type="date" />
           </div>
           <div class="full-width">
             <button class="btn btn-primary" type="submit">
@@ -121,18 +166,22 @@
           <table>
             <thead>
               <tr>
-                <th>Instrument ID</th>
-                <th>Type</th>
-                <th>Serial number</th>
-                <th>Location</th>
-                <th>Status</th>
-                <th>Photos / documents</th>
+                <th data-i18n="instrument.id">Instrument ID</th>
+                <th data-i18n="common.type">Type</th>
+                <th data-i18n="instrument.serialNumber">Serial number</th>
+                <th data-i18n="common.location">Location</th>
+                <th data-i18n="common.status">Status</th>
+                <th data-i18n="instrument.files">Photos / documents</th>
               </tr>
             </thead>
             <tbody id="instrumentRows"></tbody>
           </table>
         </div>
-        <p id="instrumentEmpty" class="field-help hidden">
+        <p
+          id="instrumentEmpty"
+          class="field-help hidden"
+          data-i18n="instrument.empty"
+        >
           No instruments registered yet.
         </p>
       </section>
@@ -143,24 +192,35 @@
         </div>
         <form id="instrumentUploadForm" class="form-grid two-up">
           <div class="field-group">
-            <label for="uploadInstrument">Instrument</label
-            ><select id="uploadInstrument" required></select>
+            <label for="uploadInstrument" data-i18n="application.instrument"
+              >Instrument</label
+            >
+            <select id="uploadInstrument" required></select>
           </div>
           <div class="field-group">
-            <label for="photoType">Photo view</label
-            ><select id="photoType">
-              <option value="FRONT">Front</option>
-              <option value="BACK">Back</option>
-              <option value="SIDE">Side</option>
-              <option value="SERIAL_PLATE">Serial number / nameplate</option>
-              <option value="LOCATION">Installation / location</option>
-              <option value="ADDITIONAL">Additional evidence</option>
+            <label for="photoType" data-i18n="instrument.photoView"
+              >Photo view</label
+            >
+            <select id="photoType">
+              <option value="FRONT" data-i18n="photo.front">Front</option>
+              <option value="BACK" data-i18n="photo.back">Back</option>
+              <option value="SIDE" data-i18n="photo.side">Side</option>
+              <option value="SERIAL_PLATE" data-i18n="photo.serialPlate">
+                Serial number / nameplate
+              </option>
+              <option value="LOCATION" data-i18n="photo.location">
+                Installation / location
+              </option>
+              <option value="ADDITIONAL" data-i18n="photo.additional">
+                Additional evidence
+              </option>
             </select>
           </div>
           <div class="field-group full-width">
-            <label for="instrumentFiles"
+            <label for="instrumentFiles" data-i18n="instrument.fileHelp"
               >JPEG, PNG, or PDF (up to 5 files, 5 MB each)</label
-            ><input
+            >
+            <input
               id="instrumentFiles"
               type="file"
               accept="image/jpeg,image/png,application/pdf"
@@ -174,7 +234,7 @@
             ></div>
           </div>
           <button class="btn btn-primary full-width" type="submit">
-            Upload evidence
+            <span data-i18n="common.upload">Upload evidence</span>
           </button>
         </form>
         <div id="uploadMessage" class="alert hidden" aria-live="polite"></div>

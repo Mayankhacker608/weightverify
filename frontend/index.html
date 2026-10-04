@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,173 +7,2660 @@
       name="description"
       content="e-Metrology enables transparent online verification and digital certification of weighing and measuring instruments."
     />
+    <meta name="theme-color" content="#f3f8ff" />
     <title>e-Metrology | Online Verification & Digital Certification</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <!-- Existing shared stylesheet (kept so other pages stay consistent) -->
     <link rel="stylesheet" href="./css/style.css" />
+
+    <style>
+      /* =========================================================
+         e-METROLOGY LANDING PAGE — UI ONLY
+         Routes, i18n and shared CSS are preserved.
+         ========================================================= */
+
+      :root {
+        --bg: #f3f8ff;
+        --bg-2: #e6f0fc;
+        --surface: #ffffff;
+        --surface-2: rgba(11, 42, 107, 0.04);
+        --text: #0b1b3a;
+        --text-2: #34496b;
+        --muted: #5d7190;
+        --navy: #0b2a6b;
+        --blue: #1456c8;
+        --sky: #4aa8ff;
+        --saffron: #f28c28;
+        --green: #1a9a52;
+        --border: rgba(11, 42, 107, 0.12);
+        --shadow: 0 24px 60px rgba(20, 60, 130, 0.15);
+        --nav-bg: rgba(255, 255, 255, 0.82);
+        --btn-ink: #ffffff;
+        --radius: 22px;
+      }
+
+      :root[data-theme="dark"] {
+        --bg: #06101d;
+        --bg-2: #0a1728;
+        --surface: #0f2038;
+        --surface-2: rgba(255, 255, 255, 0.04);
+        --text: #f3f8ff;
+        --text-2: #b6c6da;
+        --muted: #8a9db6;
+        --navy: #8fc3ff;
+        --blue: #4f8bff;
+        --sky: #27d3ff;
+        --saffron: #ffa94d;
+        --green: #32e6a1;
+        --border: rgba(255, 255, 255, 0.1);
+        --shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+        --nav-bg: rgba(8, 18, 32, 0.8);
+        --btn-ink: #03111d;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 90px;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", system-ui, sans-serif;
+        color: var(--text);
+        line-height: 1.6;
+        overflow-x: hidden;
+        background:
+          radial-gradient(
+            circle at 10% 0%,
+            rgba(74, 168, 255, 0.16),
+            transparent 35%
+          ),
+          radial-gradient(
+            circle at 95% 10%,
+            rgba(242, 140, 40, 0.1),
+            transparent 30%
+          ),
+          linear-gradient(180deg, var(--bg), var(--bg-2));
+        background-attachment: fixed;
+        transition:
+          background 0.4s ease,
+          color 0.4s ease;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .container {
+        position: relative;
+        z-index: 2;
+        width: min(1200px, 100% - 40px);
+        margin-inline: auto;
+      }
+
+      .skip-link {
+        position: absolute;
+        left: 16px;
+        top: -60px;
+        z-index: 200;
+        padding: 10px 16px;
+        border-radius: 10px;
+        background: var(--blue);
+        color: #fff;
+        font-weight: 700;
+        text-decoration: none;
+        transition: top 0.2s ease;
+      }
+      .skip-link:focus {
+        top: 12px;
+      }
+      :focus-visible {
+        outline: 2px solid var(--blue);
+        outline-offset: 3px;
+        border-radius: 6px;
+      }
+
+      /* Scroll progress */
+      .scroll-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 3px;
+        width: 0;
+        z-index: 150;
+        background: linear-gradient(
+          90deg,
+          var(--saffron),
+          var(--blue),
+          var(--green)
+        );
+      }
+
+      /* Notice strip */
+      .notice-strip {
+        padding: 8px 16px;
+        text-align: center;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-2);
+        background: linear-gradient(
+          90deg,
+          rgba(242, 140, 40, 0.14),
+          rgba(74, 168, 255, 0.12)
+        );
+        border-bottom: 1px solid var(--border);
+      }
+      .notice-strip i {
+        color: var(--saffron);
+        margin-right: 6px;
+      }
+
+      /* =================== NAVBAR =================== */
+      .site-nav {
+        position: sticky;
+        top: 0;
+        z-index: 120;
+        background: var(--nav-bg);
+        backdrop-filter: blur(18px) saturate(1.4);
+        border-bottom: 1px solid var(--border);
+        transition: box-shadow 0.3s ease;
+      }
+      .site-nav.scrolled {
+        box-shadow: 0 10px 35px rgba(10, 40, 90, 0.14);
+      }
+      .site-nav::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -1px;
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          var(--saffron) 0 33%,
+          transparent 33% 66%,
+          var(--green) 66%
+        );
+        opacity: 0.85;
+      }
+
+      .topbar {
+        min-height: 76px;
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+        gap: 28px;
+        transition: min-height 0.3s ease;
+      }
+      .site-nav.scrolled .topbar {
+        min-height: 64px;
+      }
+
+      .brand-block {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        text-decoration: none;
+      }
+      .brand-mark {
+        width: 46px;
+        height: 46px;
+        display: grid;
+        place-items: center;
+        border-radius: 14px;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 24px;
+        font-weight: 700;
+        color: #fff;
+        background: linear-gradient(135deg, var(--navy), var(--blue));
+        box-shadow: 0 8px 22px rgba(20, 86, 200, 0.35);
+        animation: markPulse 3s ease-in-out infinite;
+      }
+      :root[data-theme="dark"] .brand-mark {
+        color: #03111d;
+        background: linear-gradient(135deg, var(--sky), #9fe9ff);
+      }
+      @keyframes markPulse {
+        0%,
+        100% {
+          box-shadow: 0 6px 18px rgba(20, 86, 200, 0.25);
+        }
+        50% {
+          box-shadow: 0 8px 34px rgba(20, 86, 200, 0.5);
+        }
+      }
+      .eyebrow {
+        margin: 0;
+        font-weight: 800;
+        font-size: 17px;
+        color: var(--text);
+        font-family: "Space Grotesk", sans-serif;
+      }
+      .subeyebrow {
+        margin: 2px 0 0;
+        font-size: 11.5px;
+        color: var(--muted);
+      }
+
+      .main-nav {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+        min-width: 0;
+      }
+      .main-nav a {
+        white-space: nowrap;
+      }
+      .main-nav .mobile-only {
+        display: none;
+      }
+      .nav-actions .btn {
+        padding: 10px 20px;
+      }
+      .nav-actions .nav-login {
+        padding: 9px 18px;
+      }
+      .nav-sep {
+        width: 1px;
+        height: 26px;
+        background: var(--border);
+        margin-inline: 4px;
+      }
+      .main-nav a:not(.btn) {
+        position: relative;
+        padding: 10px 14px;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-2);
+        text-decoration: none;
+        border-radius: 10px;
+        transition: color 0.25s ease;
+      }
+      .main-nav a:not(.btn)::after {
+        content: "";
+        position: absolute;
+        left: 14px;
+        right: 14px;
+        bottom: 4px;
+        height: 2px;
+        border-radius: 2px;
+        background: linear-gradient(90deg, var(--saffron), var(--blue));
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.3s ease;
+      }
+      .main-nav a:not(.btn):hover,
+      .main-nav a.active {
+        color: var(--blue);
+      }
+      .main-nav a:not(.btn):hover::after,
+      .main-nav a.active::after {
+        transform: scaleX(1);
+      }
+
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .icon-btn {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: var(--surface);
+        color: var(--text);
+        cursor: pointer;
+        transition:
+          transform 0.25s ease,
+          border-color 0.25s ease;
+      }
+      .icon-btn:hover {
+        transform: translateY(-2px) rotate(12deg);
+        border-color: var(--blue);
+      }
+
+      .menu-btn {
+        display: none;
+      }
+
+      /* Buttons */
+      .btn {
+        position: relative;
+        overflow: hidden;
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        padding: 12px 22px;
+        border-radius: 12px;
+        font: inherit;
+        font-size: 14px;
+        text-decoration: none;
+        cursor: pointer;
+        transition:
+          transform 0.25s ease,
+          box-shadow 0.25s ease,
+          border-color 0.25s ease;
+      }
+      .btn::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        transform: translateX(-110%);
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.35),
+          transparent
+        );
+        transition: transform 0.6s ease;
+      }
+      .btn:hover::before {
+        transform: translateX(110%);
+      }
+      .btn:hover {
+        transform: translateY(-2px);
+      }
+
+      .btn-primary {
+        border: 0;
+        background: linear-gradient(
+          135deg,
+          var(--blue),
+          var(--navy)
+        ) !important;
+        color: #fff !important;
+        font-weight: 700;
+        box-shadow: 0 12px 28px rgba(20, 86, 200, 0.32);
+      }
+      :root[data-theme="dark"] .btn-primary {
+        background: linear-gradient(135deg, var(--sky), var(--blue)) !important;
+        color: #03111d !important;
+      }
+      .btn-primary:hover {
+        box-shadow: 0 18px 38px rgba(20, 86, 200, 0.45);
+      }
+
+      .btn-secondary {
+        border: 1.5px solid var(--border);
+        background: var(--surface);
+        color: var(--text) !important;
+        font-weight: 600;
+      }
+      .btn-secondary:hover {
+        border-color: var(--blue);
+        color: var(--blue) !important;
+      }
+
+      /* =================== HERO =================== */
+      .site-header {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .masthead {
+        display: grid;
+        grid-template-columns: 1fr 1.05fr;
+        gap: 56px;
+        align-items: center;
+        padding-block: 64px 90px;
+      }
+
+      .section-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0 0 20px;
+        padding: 7px 14px;
+        border: 1px solid rgba(20, 86, 200, 0.22);
+        border-radius: 999px;
+        background: rgba(20, 86, 200, 0.07);
+        color: var(--blue);
+        font-size: 12px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+      }
+      .section-tag::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--green);
+        box-shadow: 0 0 10px var(--green);
+        animation: blink 1.7s infinite;
+      }
+      @keyframes blink {
+        50% {
+          opacity: 0.3;
+        }
+      }
+
+      .masthead h1 {
+        margin: 0;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: clamp(40px, 5.2vw, 66px);
+        line-height: 1.02;
+        letter-spacing: -0.045em;
+        color: var(--navy);
+      }
+      .masthead h1 .w {
+        display: inline-block;
+        opacity: 0;
+        transform: translateY(32px) rotateX(-40deg);
+        animation: wordIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+      }
+      .masthead h1 .grad {
+        background: linear-gradient(
+          100deg,
+          var(--saffron),
+          var(--blue) 55%,
+          var(--green)
+        );
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation:
+          wordIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards,
+          shimmer 5s linear infinite;
+      }
+      @keyframes wordIn {
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      @keyframes shimmer {
+        to {
+          background-position: 200% center;
+        }
+      }
+
+      .typed-line {
+        min-height: 34px;
+        margin: 22px 0 0;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 22px;
+        font-weight: 600;
+        color: var(--text-2);
+        animation: fadeUp 0.8s 0.5s ease both;
+      }
+      .typed-line .typed {
+        color: var(--blue);
+      }
+      .caret {
+        display: inline-block;
+        width: 2px;
+        height: 1em;
+        margin-left: 3px;
+        vertical-align: -3px;
+        background: var(--saffron);
+        animation: caret 0.9s steps(1) infinite;
+      }
+      @keyframes caret {
+        50% {
+          opacity: 0;
+        }
+      }
+
+      .lead {
+        max-width: 600px;
+        margin: 18px 0 0;
+        color: var(--muted);
+        font-size: 17.5px;
+        line-height: 1.8;
+        animation: fadeUp 0.8s 0.65s ease both;
+      }
+      .cta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 32px;
+        animation: fadeUp 0.8s 0.8s ease both;
+      }
+      .trust-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px 22px;
+        margin: 28px 0 0;
+        padding: 0;
+        list-style: none;
+        color: var(--text-2);
+        font-size: 13px;
+        font-weight: 500;
+        animation: fadeUp 0.8s 0.95s ease both;
+      }
+      .trust-row i {
+        color: var(--green);
+        margin-right: 7px;
+      }
+
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      /* Hero illustration */
+      .hero-visual {
+        position: relative;
+        border-radius: 28px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+        background: linear-gradient(160deg, #dff0ff, #bcdcff 45%, #1d4fb0 100%);
+        box-shadow: var(--shadow);
+        animation: heroIn 1s 0.2s ease both;
+      }
+      :root[data-theme="dark"] .hero-visual {
+        background: linear-gradient(160deg, #123764, #0d2a52 50%, #071a38);
+      }
+      @keyframes heroIn {
+        from {
+          opacity: 0;
+          transform: translateY(34px) scale(0.97);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      .hero-visual svg {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      .float-a {
+        animation: floatY 5s ease-in-out infinite;
+      }
+      .float-b {
+        animation: floatY 6.5s 0.8s ease-in-out infinite;
+      }
+      .float-c {
+        animation: floatY 7s 1.4s ease-in-out infinite;
+      }
+      @keyframes floatY {
+        50% {
+          transform: translateY(-9px);
+        }
+      }
+      .ring {
+        transform-origin: 392px 92px;
+        animation: spin 18s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .pulse-dot {
+        animation: blink 1.6s infinite;
+      }
+
+      .visual-chip {
+        position: absolute;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 13px;
+        border-radius: 999px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        box-shadow: 0 10px 28px rgba(10, 40, 90, 0.18);
+        color: var(--text);
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .visual-chip i {
+        color: var(--green);
+      }
+      .chip-1 {
+        left: 18px;
+        top: 18px;
+        animation: floatY 5.5s ease-in-out infinite;
+      }
+      .chip-2 {
+        right: 18px;
+        bottom: 74px;
+        animation: floatY 6s 1s ease-in-out infinite;
+      }
+
+      /* Badge strip (like banner) */
+      .badge-strip {
+        position: relative;
+        z-index: 3;
+        margin-top: -46px;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        background: var(--surface);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+      .badge-item {
+        position: relative;
+        padding: 22px 12px 20px;
+        text-align: center;
+        transition:
+          background 0.3s ease,
+          transform 0.3s ease;
+      }
+      .badge-item + .badge-item {
+        border-left: 1px solid var(--border);
+      }
+      .badge-item:hover {
+        background: var(--surface-2);
+        transform: translateY(-3px);
+      }
+      .badge-icon {
+        width: 56px;
+        height: 56px;
+        display: grid;
+        place-items: center;
+        margin: 0 auto 10px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--navy), var(--blue));
+        color: #fff;
+        font-size: 22px;
+        transition: transform 0.4s ease;
+      }
+      :root[data-theme="dark"] .badge-icon {
+        color: #03111d;
+        background: linear-gradient(135deg, var(--sky), #9fe9ff);
+      }
+      .badge-item:hover .badge-icon {
+        transform: scale(1.12) rotate(-6deg);
+      }
+      .badge-item strong {
+        display: block;
+        font-size: 15px;
+        color: var(--text);
+      }
+      .badge-item::after {
+        content: "";
+        display: block;
+        width: 34px;
+        height: 3px;
+        margin: 10px auto 0;
+        border-radius: 3px;
+        background: var(--saffron);
+        transition: width 0.3s ease;
+      }
+      .badge-item:nth-child(even)::after {
+        background: var(--green);
+      }
+      .badge-item:hover::after {
+        width: 54px;
+      }
+
+      /* =================== SECTIONS =================== */
+      .layout-stack {
+        padding-block: 90px 80px;
+      }
+      .layout-stack > section + section {
+        margin-top: 26px;
+      }
+
+      .section-intro {
+        max-width: 660px;
+        margin: 0 0 34px;
+      }
+      .section-intro h2,
+      .section-header h2 {
+        margin: 0;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: clamp(27px, 4vw, 38px);
+        letter-spacing: -0.035em;
+        color: var(--navy);
+      }
+      .section-intro p {
+        margin: 10px 0 0;
+        color: var(--muted);
+      }
+
+      /* Title underline draw */
+      .title-line {
+        position: relative;
+        display: inline-block;
+        padding-bottom: 12px;
+      }
+      .title-line::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 4px;
+        width: 0;
+        border-radius: 4px;
+        background: linear-gradient(
+          90deg,
+          var(--saffron),
+          var(--blue),
+          var(--green)
+        );
+        transition: width 1s 0.3s ease;
+      }
+      .visible .title-line::after {
+        width: 100%;
+      }
+
+      .three-col {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+      }
+
+      .feature-card {
+        position: relative;
+        overflow: hidden;
+        padding: 30px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: var(--surface);
+        box-shadow: 0 10px 30px rgba(20, 60, 130, 0.07);
+        transition:
+          transform 0.35s ease,
+          border-color 0.35s ease,
+          box-shadow 0.35s ease;
+      }
+      .feature-card::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 4px;
+        width: 0;
+        background: linear-gradient(90deg, var(--saffron), var(--blue));
+        transition: width 0.5s ease;
+      }
+      .feature-card:hover {
+        transform: translateY(-8px);
+        border-color: rgba(20, 86, 200, 0.35);
+        box-shadow: var(--shadow);
+      }
+      .feature-card:hover::before {
+        width: 100%;
+      }
+      .feature-icon {
+        width: 52px;
+        height: 52px;
+        display: grid;
+        place-items: center;
+        margin-bottom: 20px;
+        border-radius: 15px;
+        background: rgba(20, 86, 200, 0.09);
+        color: var(--blue);
+        font-size: 21px;
+        transition:
+          transform 0.4s ease,
+          background 0.4s ease,
+          color 0.4s ease;
+      }
+      .feature-card:hover .feature-icon {
+        transform: rotate(-8deg) scale(1.08);
+        background: var(--blue);
+        color: #fff;
+      }
+      .feature-card h3 {
+        margin: 0 0 10px;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 20px;
+        color: var(--text);
+      }
+      .feature-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.75;
+      }
+
+      .info-panel {
+        padding: 38px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: var(--surface);
+        box-shadow: 0 10px 30px rgba(20, 60, 130, 0.07);
+      }
+      .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 30px;
+      }
+
+      /* Timeline */
+      .timeline {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 12px;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+      }
+      .timeline::before {
+        content: "";
+        position: absolute;
+        left: 10%;
+        right: 10%;
+        top: 37px;
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          var(--saffron),
+          var(--blue),
+          var(--green)
+        );
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 1.6s 0.3s ease;
+        opacity: 0.55;
+      }
+      .visible .timeline::before {
+        transform: scaleX(1);
+      }
+      .timeline li {
+        position: relative;
+        z-index: 2;
+        min-height: 150px;
+        padding: 20px;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        background: var(--surface);
+        color: var(--text-2);
+        font-size: 14px;
+        font-weight: 500;
+        opacity: 0;
+        transform: translateY(22px);
+        transition:
+          transform 0.35s ease,
+          border-color 0.35s ease,
+          opacity 0.6s ease;
+      }
+      .visible .timeline li {
+        opacity: 1;
+        transform: none;
+      }
+      .visible .timeline li:nth-child(1) {
+        transition-delay: 0.1s;
+      }
+      .visible .timeline li:nth-child(2) {
+        transition-delay: 0.3s;
+      }
+      .visible .timeline li:nth-child(3) {
+        transition-delay: 0.5s;
+      }
+      .visible .timeline li:nth-child(4) {
+        transition-delay: 0.7s;
+      }
+      .visible .timeline li:nth-child(5) {
+        transition-delay: 0.9s;
+      }
+      .visible .timeline li:hover {
+        transform: translateY(-6px);
+        border-color: rgba(20, 86, 200, 0.4);
+        transition-delay: 0s;
+      }
+      .timeline li span {
+        width: 34px;
+        height: 34px;
+        display: grid;
+        place-items: center;
+        margin-bottom: 22px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--blue), var(--navy));
+        color: #fff;
+        font-weight: 800;
+      }
+      :root[data-theme="dark"] .timeline li span {
+        color: #03111d;
+        background: linear-gradient(135deg, var(--sky), #9fe9ff);
+      }
+
+      /* Tabs */
+      .role-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 22px;
+      }
+      .role-tab {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: var(--surface-2);
+        color: var(--text-2);
+        font: inherit;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.25s ease;
+      }
+      .role-tab:hover {
+        border-color: var(--blue);
+        color: var(--blue);
+      }
+      .role-tab[aria-selected="true"] {
+        background: linear-gradient(135deg, var(--blue), var(--navy));
+        border-color: transparent;
+        color: #fff;
+      }
+      :root[data-theme="dark"] .role-tab[aria-selected="true"] {
+        color: #03111d;
+        background: linear-gradient(135deg, var(--sky), var(--blue));
+      }
+      .role-panel {
+        display: none;
+      }
+      .role-panel.active {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 28px;
+        align-items: center;
+        animation: fadeUp 0.45s ease both;
+      }
+      .role-panel h3 {
+        margin: 0 0 10px;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 24px;
+        color: var(--navy);
+      }
+      .role-panel p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+      .role-points {
+        display: grid;
+        gap: 10px;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+      }
+      .role-points li {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        padding: 14px 16px;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        background: var(--surface-2);
+        color: var(--text-2);
+        font-size: 14px;
+        opacity: 0;
+        animation: slideIn 0.5s ease forwards;
+      }
+      .role-points li:nth-child(1) {
+        animation-delay: 0.1s;
+      }
+      .role-points li:nth-child(2) {
+        animation-delay: 0.22s;
+      }
+      .role-points li:nth-child(3) {
+        animation-delay: 0.34s;
+      }
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(24px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      .role-points i {
+        margin-top: 3px;
+        color: var(--green);
+      }
+
+      /* FAQ */
+      details {
+        padding: 18px 0;
+        border-bottom: 1px solid var(--border);
+      }
+      details:last-child {
+        border-bottom: 0;
+      }
+      summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        cursor: pointer;
+        list-style: none;
+        font-weight: 700;
+        color: var(--text);
+        transition: color 0.2s ease;
+      }
+      summary::-webkit-details-marker {
+        display: none;
+      }
+      summary::after {
+        content: "\f067";
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
+        font-size: 12px;
+        color: var(--blue);
+        transition: transform 0.3s ease;
+      }
+      details[open] summary::after {
+        transform: rotate(45deg);
+      }
+      summary:hover {
+        color: var(--blue);
+      }
+      details p {
+        max-width: 850px;
+        margin: 14px 0 0;
+        color: var(--muted);
+        line-height: 1.75;
+        animation: fadeUp 0.4s ease both;
+      }
+
+      /* CTA band */
+      .cta-band {
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 40px;
+        border-radius: var(--radius);
+        color: #fff;
+        background: linear-gradient(120deg, #0b2a6b, #1456c8 70%, #2a78e0);
+      }
+      .cta-band::before,
+      .cta-band::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        pointer-events: none;
+      }
+      .cta-band::before {
+        width: 260px;
+        height: 260px;
+        right: -60px;
+        top: -120px;
+        background: rgba(242, 140, 40, 0.3);
+        filter: blur(30px);
+      }
+      .cta-band::after {
+        width: 240px;
+        height: 240px;
+        left: 30%;
+        bottom: -150px;
+        background: rgba(26, 154, 82, 0.28);
+        filter: blur(30px);
+      }
+      .cta-band > * {
+        position: relative;
+        z-index: 1;
+      }
+      .cta-band h2 {
+        margin: 0 0 6px;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: clamp(24px, 3.4vw, 32px);
+        letter-spacing: -0.03em;
+        color: #fff;
+      }
+      .cta-band p {
+        margin: 0;
+        color: rgba(255, 255, 255, 0.82);
+      }
+      .cta-band .btn-primary {
+        background: #fff !important;
+        color: var(--navy) !important;
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+      }
+      .cta-band .btn-secondary {
+        background: transparent;
+        border-color: rgba(255, 255, 255, 0.5);
+        color: #fff !important;
+      }
+      .cta-band .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.12);
+        border-color: #fff;
+        color: #fff !important;
+      }
+
+      /* Footer */
+      .site-footer {
+        border-top: 1px solid var(--border);
+        background: var(--surface);
+      }
+      .site-footer .container {
+        min-height: 90px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .site-footer a {
+        color: var(--text-2);
+        text-decoration: none;
+        transition: color 0.2s ease;
+      }
+      .site-footer a:hover {
+        color: var(--blue);
+      }
+
+      /* Scroll reveal */
+      .reveal {
+        opacity: 0;
+        transform: translateY(28px);
+        transition:
+          opacity 0.8s ease,
+          transform 0.8s ease;
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: none;
+      }
+      .stagger > * {
+        opacity: 0;
+        transform: translateY(26px);
+        transition:
+          opacity 0.7s ease,
+          transform 0.35s ease,
+          border-color 0.35s ease,
+          box-shadow 0.35s ease;
+      }
+      .visible .stagger > *,
+      .visible.stagger > * {
+        opacity: 1;
+        transform: none;
+      }
+      .visible .stagger > *:nth-child(2),
+      .visible.stagger > *:nth-child(2) {
+        transition-delay: 0.15s;
+      }
+      .visible .stagger > *:nth-child(3),
+      .visible.stagger > *:nth-child(3) {
+        transition-delay: 0.3s;
+      }
+      .visible .stagger > *:hover {
+        transform: translateY(-8px);
+      }
+
+      /* =================== RESPONSIVE =================== */
+      @media (max-width: 1000px) {
+        .masthead {
+          grid-template-columns: 1fr;
+          gap: 40px;
+          padding-block: 48px 80px;
+        }
+        .timeline {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .timeline::before {
+          display: none;
+        }
+        .role-panel.active {
+          grid-template-columns: 1fr;
+        }
+        .cta-band {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .badge-strip {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .badge-item:nth-child(4) {
+          border-left: 0;
+        }
+        .badge-item:nth-child(n + 4) {
+          border-top: 1px solid var(--border);
+        }
+      }
+
+      @media (max-width: 1180px) {
+        .subeyebrow {
+          display: none;
+        }
+        .topbar {
+          gap: 18px;
+        }
+      }
+
+      @media (max-width: 1060px) and (min-width: 861px) {
+        .main-nav a:not(.btn) {
+          padding: 10px 9px;
+          font-size: 13.5px;
+        }
+        .nav-actions .nav-login,
+        .nav-sep {
+          display: none;
+        }
+      }
+
+      @media (max-width: 860px) {
+        .topbar {
+          display: flex;
+          justify-content: space-between;
+        }
+        .nav-sep {
+          display: none;
+        }
+        .main-nav .mobile-only {
+          display: block;
+        }
+        .main-nav .btn.mobile-only {
+          display: inline-flex;
+        }
+        .menu-btn {
+          display: grid;
+        }
+        .main-nav {
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 100%;
+          flex-direction: column;
+          align-items: stretch;
+          gap: 2px;
+          padding: 12px 20px 18px;
+          background: var(--surface);
+          border-bottom: 1px solid var(--border);
+          box-shadow: 0 20px 40px rgba(10, 40, 90, 0.15);
+          transform: translateY(-12px);
+          opacity: 0;
+          visibility: hidden;
+          transition: all 0.3s ease;
+        }
+        .main-nav.open {
+          transform: none;
+          opacity: 1;
+          visibility: visible;
+        }
+        .main-nav a:not(.btn) {
+          padding: 13px 8px;
+        }
+        .main-nav a:not(.btn)::after {
+          left: 8px;
+          right: auto;
+          width: 36px;
+        }
+        .nav-actions .btn {
+          display: none;
+        }
+        .main-nav .btn {
+          justify-content: center;
+          margin-top: 8px;
+        }
+      }
+      @media (min-width: 861px) {
+        .main-nav .btn {
+          display: none;
+        }
+      }
+
+      @media (max-width: 760px) {
+        .three-col {
+          grid-template-columns: 1fr;
+        }
+        .timeline {
+          grid-template-columns: 1fr;
+        }
+        .info-panel,
+        .cta-band {
+          padding: 24px;
+        }
+        .lead {
+          font-size: 16px;
+        }
+        .typed-line {
+          font-size: 18px;
+        }
+        .badge-strip {
+          grid-template-columns: repeat(2, 1fr);
+          margin-top: -30px;
+        }
+        .badge-item {
+          border-left: 0 !important;
+          border-top: 1px solid var(--border);
+        }
+        .badge-item:nth-child(-n + 2) {
+          border-top: 0;
+        }
+        .badge-item:nth-child(even) {
+          border-left: 1px solid var(--border) !important;
+        }
+        .badge-item:last-child {
+          grid-column: 1 / -1;
+          border-left: 0 !important;
+        }
+        .site-footer .container {
+          flex-direction: column;
+          align-items: flex-start;
+          padding-block: 24px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+        .reveal,
+        .stagger > *,
+        .timeline li,
+        .masthead h1 .w {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+      }
+    </style>
+    <style id="navbar-fix">
+      /* =========================================================
+         NAVBAR ISOLATION
+         Scoped with #siteNav so shared ./css/style.css rules
+         (card look, uppercase brand text, gradient text clip,
+         wrapped links) can no longer break the navbar.
+         ========================================================= */
+      #siteNav,
+      #siteNav * {
+        box-sizing: border-box;
+      }
+
+      #siteNav {
+        position: sticky;
+        top: 0;
+        z-index: 120;
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        border-bottom: 1px solid var(--border);
+        border-radius: 0;
+        background: var(--nav-bg);
+        box-shadow: none;
+        backdrop-filter: blur(18px) saturate(1.4);
+      }
+      #siteNav.scrolled {
+        box-shadow: 0 10px 35px rgba(10, 40, 90, 0.14);
+      }
+
+      /* Inner bar: plain flex row, no card styling */
+      #siteNav .em-wrap {
+        position: relative;
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 24px;
+        width: min(1240px, 100% - 40px);
+        max-width: none;
+        min-height: 76px;
+        margin: 0 auto;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+        backdrop-filter: none;
+        transition: min-height 0.3s ease;
+      }
+      #siteNav.scrolled .em-wrap {
+        min-height: 64px;
+      }
+
+      /* Brand */
+      #siteNav .brand-block {
+        display: flex;
+        flex: none;
+        align-items: center;
+        gap: 13px;
+        width: auto;
+        max-width: none;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        background: none;
+        box-shadow: none;
+        text-decoration: none;
+      }
+      #siteNav .brand-mark {
+        width: 46px;
+        height: 46px;
+        flex: none;
+        display: grid;
+        place-items: center;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 14px;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 1;
+        color: #fff;
+        -webkit-text-fill-color: #fff;
+        background: linear-gradient(135deg, var(--navy), var(--blue));
+        -webkit-background-clip: border-box;
+        background-clip: border-box;
+        box-shadow: 0 8px 22px rgba(20, 86, 200, 0.35);
+      }
+      :root[data-theme="dark"] #siteNav .brand-mark {
+        color: #03111d;
+        -webkit-text-fill-color: #03111d;
+        background: linear-gradient(135deg, var(--sky), #9fe9ff);
+      }
+      #siteNav .eyebrow {
+        margin: 0;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 18px;
+        font-weight: 800;
+        line-height: 1.2;
+        letter-spacing: -0.01em;
+        text-transform: none;
+        white-space: nowrap;
+        color: var(--text);
+      }
+      #siteNav .subeyebrow {
+        max-width: none;
+        margin: 2px 0 0;
+        font-size: 11.5px;
+        font-weight: 500;
+        line-height: 1.3;
+        letter-spacing: 0;
+        text-transform: none;
+        white-space: nowrap;
+        color: var(--muted);
+      }
+
+      /* Links: one centered row, never wraps */
+      #siteNav .main-nav {
+        position: static;
+        display: flex;
+        flex: 1 1 auto;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+        width: auto;
+        min-width: 0;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        background: none;
+        box-shadow: none;
+        transform: none;
+        opacity: 1;
+        visibility: visible;
+      }
+      #siteNav .main-nav a:not(.btn) {
+        position: relative;
+        display: inline-block;
+        padding: 10px 14px;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.2;
+        white-space: nowrap;
+        color: var(--text-2);
+        text-decoration: none;
+        border: 0;
+        border-radius: 10px;
+        background: none;
+      }
+      #siteNav .main-nav a:not(.btn):hover,
+      #siteNav .main-nav a.active {
+        color: var(--blue);
+      }
+      #siteNav .main-nav a.mobile-only {
+        display: none;
+      }
+
+      /* Right-side actions */
+      #siteNav .nav-actions {
+        display: flex;
+        flex: none;
+        flex-wrap: nowrap;
+        align-items: center;
+        gap: 10px;
+        margin: 0 0 0 auto;
+        padding: 0;
+        border: 0;
+        background: none;
+        box-shadow: none;
+      }
+      #siteNav .nav-actions .btn {
+        padding: 10px 20px;
+        font-size: 14px;
+        line-height: 1.2;
+        white-space: nowrap;
+      }
+      #siteNav .nav-actions .nav-login {
+        padding: 9px 18px;
+      }
+      #siteNav .nav-sep {
+        width: 1px;
+        height: 26px;
+        margin-inline: 2px;
+        background: var(--border);
+      }
+
+      /* Language switcher injected by i18n.js (class names unknown, so
+         match anything language-related inside the navbar) */
+      #siteNav :is(div, span, ul, li, nav)[class*="lang"],
+      #siteNav :is(div, span, ul, li)[id*="lang"] {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        margin: 0;
+        padding: 3px;
+        list-style: none;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: var(--surface);
+        box-shadow: none;
+        white-space: nowrap;
+      }
+      #siteNav :is(button, a, select)[class*="lang"],
+      #siteNav :is(button, a, select)[id*="lang"],
+      #siteNav :is(div, span, ul, li)[class*="lang"] :is(button, a),
+      #siteNav :is(div, span, ul, li)[id*="lang"] :is(button, a) {
+        margin: 0;
+        padding: 6px 13px;
+        border: 0;
+        border-radius: 999px;
+        background: transparent;
+        color: var(--text-2);
+        font: inherit;
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.2;
+        cursor: pointer;
+        text-decoration: none;
+        white-space: nowrap;
+        transition:
+          background 0.2s ease,
+          color 0.2s ease;
+      }
+      #siteNav :is(button, a)[class*="lang"]:hover,
+      #siteNav :is(div, span, ul, li)[class*="lang"] :is(button, a):hover {
+        background: rgba(20, 86, 200, 0.1);
+        color: var(--blue);
+      }
+      #siteNav
+        :is(button, a)[class*="lang"]:is(
+          .active,
+          .is-active,
+          .selected,
+          [aria-pressed="true"],
+          [aria-current]
+        ),
+      #siteNav
+        :is(div, span, ul, li)[class*="lang"]
+        :is(button, a):is(
+          .active,
+          .is-active,
+          .selected,
+          [aria-pressed="true"],
+          [aria-current]
+        ) {
+        background: linear-gradient(135deg, var(--blue), var(--navy));
+        color: #fff;
+      }
+
+      /* Remaining shared-stylesheet rules neutralised */
+      #siteNav .em-wrap {
+        flex-direction: row;
+        align-items: center;
+      }
+      #siteNav .eyebrow,
+      #siteNav .subeyebrow {
+        opacity: 1;
+      }
+      #siteNav .language-switch {
+        flex: none;
+      }
+
+      /* style.css gives .site-header a dark gradient + white text; this
+         page uses its own light/dark theme, so reset it. */
+      .site-header {
+        background: transparent;
+        color: var(--text);
+        padding-bottom: 0;
+      }
+      /* style.css makes timeline items flex rows; this layout stacks them */
+      .timeline li {
+        display: block;
+      }
+      /* first-visit language dialog must follow the active theme */
+      .language-dialog {
+        background: var(--surface);
+        color: var(--text);
+      }
+      .language-dialog h2 {
+        color: var(--text);
+      }
+
+      @media (max-width: 480px) {
+        #siteNav .brand-block > div:last-child {
+          display: none;
+        }
+        #siteNav .em-wrap {
+          gap: 10px;
+        }
+      }
+
+      /* Narrower desktops */
+      @media (max-width: 1180px) {
+        #siteNav .subeyebrow {
+          display: none;
+        }
+        #siteNav .em-wrap {
+          gap: 16px;
+        }
+      }
+      @media (max-width: 1060px) and (min-width: 861px) {
+        #siteNav .main-nav a:not(.btn) {
+          padding: 10px 9px;
+          font-size: 13.5px;
+        }
+        #siteNav .nav-actions .nav-login,
+        #siteNav .nav-sep {
+          display: none;
+        }
+      }
+
+      /* Mobile / tablet dropdown */
+      @media (max-width: 860px) {
+        #siteNav .em-wrap {
+          justify-content: space-between;
+        }
+        #siteNav .nav-sep {
+          display: none;
+        }
+        #siteNav .nav-actions {
+          margin-left: 0;
+        }
+        #siteNav .nav-actions .btn {
+          display: none;
+        }
+        #siteNav .main-nav {
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 100%;
+          flex-direction: column;
+          align-items: stretch;
+          justify-content: flex-start;
+          gap: 2px;
+          padding: 12px 20px 18px;
+          background: var(--surface);
+          border-bottom: 1px solid var(--border);
+          box-shadow: 0 20px 40px rgba(10, 40, 90, 0.15);
+          transform: translateY(-12px);
+          opacity: 0;
+          visibility: hidden;
+          transition: all 0.3s ease;
+        }
+        #siteNav .main-nav.open {
+          transform: none;
+          opacity: 1;
+          visibility: visible;
+        }
+        #siteNav .main-nav a:not(.btn) {
+          display: block;
+          padding: 13px 8px;
+        }
+        #siteNav .main-nav a.mobile-only {
+          display: block;
+        }
+        #siteNav .main-nav a.btn.mobile-only {
+          display: inline-flex;
+          justify-content: center;
+          margin-top: 8px;
+        }
+      }
+    </style>
   </head>
+
   <body>
-    <header class="site-header">
-      <div class="topbar container">
-        <div class="brand-block">
-          <div class="brand-mark">e</div>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <div class="notice-strip" role="note">
+      <i class="fa-solid fa-circle-info"></i>
+      Demonstration service &mdash; not an official government registry or
+      government-issued certificate.
+    </div>
+
+    <!-- =====================================================
+         NAVBAR
+         ===================================================== -->
+    <nav class="site-nav" id="siteNav" aria-label="Main navigation">
+      <div class="topbar container em-wrap">
+        <a
+          href="./index.html"
+          class="brand-block"
+          aria-label="e-Metrology home"
+        >
+          <div class="brand-mark" aria-hidden="true">e</div>
           <div>
-            <p class="eyebrow">Public service prototype</p>
+            <p class="eyebrow">e-Metrology</p>
             <p class="subeyebrow">
               Weighing and measuring instrument verification
             </p>
           </div>
+        </a>
+
+        <div class="main-nav" id="mainNav">
+          <a href="#features" data-spy="features">Features</a>
+          <a href="#how-it-works" data-spy="how-it-works">How it works</a>
+          <a href="#roles" data-spy="roles">Who it's for</a>
+          <a href="#faq" data-spy="faq">FAQ</a>
+          <a href="./verify.html" data-i18n="nav.verify">Verify Certificate</a>
+          <a href="./login.html" class="mobile-only" data-i18n="nav.login"
+            >Login</a
+          >
+          <a
+            href="./register.html"
+            class="btn btn-primary mobile-only"
+            data-i18n="nav.register"
+            >Register</a
+          >
         </div>
-        <nav class="main-nav" aria-label="Main navigation">
-          <a href="./verify.html">Verify Certificate</a>
-          <a href="./login.html">Login</a>
-          <a href="./register.html" class="btn btn-primary">Register</a>
-        </nav>
+
+        <div class="nav-actions">
+          <button
+            type="button"
+            class="icon-btn"
+            id="themeToggle"
+            aria-label="Toggle light and dark theme"
+          >
+            <i class="fa-solid fa-circle-half-stroke"></i>
+          </button>
+          <span class="nav-sep" aria-hidden="true"></span>
+          <a href="./login.html" class="btn btn-secondary nav-login">
+            <i class="fa-solid fa-right-to-bracket"></i>
+            <span data-i18n="nav.login">Login</span>
+          </a>
+          <a href="./register.html" class="btn btn-primary">
+            <i class="fa-solid fa-user-plus"></i>
+            <span data-i18n="nav.register">Register</span>
+          </a>
+          <button
+            type="button"
+            class="icon-btn menu-btn"
+            id="menuBtn"
+            aria-label="Open menu"
+            aria-expanded="false"
+            aria-controls="mainNav"
+          >
+            <i class="fa-solid fa-bars"></i>
+          </button>
+        </div>
       </div>
+    </nav>
+
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
+    <header class="site-header">
       <div class="masthead container">
         <div>
-          <p class="section-tag">e-Metrology</p>
-          <h1>Online Verification & Digital Certification</h1>
+          <p class="section-tag">Digital public service prototype</p>
+
+          <h1
+            id="heroTitle"
+            aria-label="Online Verification and Digital Certification"
+          >
+            Online Verification <br />
+            <span class="grad-wrap">&amp; Digital Certification</span>
+          </h1>
+
+          <p class="typed-line" aria-live="off">
+            <span class="typed" id="typed"></span
+            ><span class="caret" aria-hidden="true"></span>
+          </p>
+
           <p class="lead">
-            A digital public service for accurate, transparent verification of
+            A modern digital platform for accurate, transparent verification of
             weighing and measuring instruments, certificate traceability, and
-            expiry monitoring.
+            complete lifecycle monitoring.
           </p>
+
           <div class="cta-row">
-            <a href="./register.html" class="btn btn-primary"
-              >Apply for Verification</a
-            >
-            <a href="./verify.html" class="btn btn-secondary"
-              >Verify Certificate</a
-            >
+            <a href="./register.html" class="btn btn-primary">
+              <i class="fa-solid fa-file-circle-plus"></i>
+              <span data-i18n="common.applyVerification"
+                >Apply for Verification</span
+              >
+            </a>
+            <a href="./verify.html" class="btn btn-secondary">
+              <i class="fa-solid fa-qrcode"></i>
+              <span data-i18n="nav.verify">Verify Certificate</span>
+            </a>
           </div>
+
+          <ul class="trust-row">
+            <li><i class="fa-solid fa-circle-check"></i>Paperless workflow</li>
+            <li>
+              <i class="fa-solid fa-circle-check"></i>QR-based public check
+            </li>
+            <li><i class="fa-solid fa-circle-check"></i>Expiry tracking</li>
+          </ul>
         </div>
-        <div class="hero-card card">
-          <div class="metric-grid">
-            <div class="metric-card">
-              <span>Applications</span>
-              <strong>Online</strong>
-            </div>
-            <div class="metric-card">
-              <span>Instrument records</span>
-              <strong>Trackable</strong>
-            </div>
-            <div class="metric-card">
-              <span>Certificate checks</span>
-              <strong>Public</strong>
-            </div>
-            <div class="metric-card success">
-              <span>Lifecycle</span>
-              <strong>Digital</strong>
-            </div>
-          </div>
-          <p class="prototype-disclaimer">
-            System-generated demonstration service. Not an official government
-            registry or government-issued certificate.
-          </p>
+
+        <!-- Illustrated hero (original artwork) -->
+        <div class="hero-visual" aria-hidden="true">
+          <svg viewBox="0 0 560 440" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="gSky" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#e8f4ff" stop-opacity="0.9" />
+                <stop offset="1" stop-color="#8cc4ff" stop-opacity="0.2" />
+              </linearGradient>
+              <linearGradient id="gScale" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#f4f7fb" />
+                <stop offset="1" stop-color="#b9c6d8" />
+              </linearGradient>
+              <linearGradient id="gBase" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#2d4a7a" />
+                <stop offset="1" stop-color="#14264a" />
+              </linearGradient>
+              <linearGradient id="gShield" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#4aa8ff" />
+                <stop offset="1" stop-color="#1456c8" />
+              </linearGradient>
+              <linearGradient id="gWave" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#0b2a6b" />
+                <stop offset="1" stop-color="#1456c8" />
+              </linearGradient>
+            </defs>
+
+            <!-- soft glow circles -->
+            <circle cx="120" cy="90" r="110" fill="url(#gSky)" />
+            <circle cx="440" cy="120" r="140" fill="url(#gSky)" />
+
+            <!-- network lines -->
+            <g
+              stroke="#ffffff"
+              stroke-opacity="0.55"
+              stroke-width="1.4"
+              fill="none"
+            >
+              <path d="M300 70 H370 L400 100 H470 L500 70" />
+              <path d="M330 130 H380 L410 160 H520" />
+              <path d="M260 40 L300 70" />
+            </g>
+            <g fill="#ffffff">
+              <circle cx="300" cy="70" r="3.5" class="pulse-dot" />
+              <circle cx="400" cy="100" r="3.5" />
+              <circle cx="500" cy="70" r="3.5" class="pulse-dot" />
+              <circle cx="520" cy="160" r="3.5" />
+            </g>
+
+            <!-- cloud / data ring -->
+            <g class="float-c">
+              <circle
+                cx="392"
+                cy="92"
+                r="46"
+                fill="none"
+                stroke="#ffffff"
+                stroke-opacity="0.65"
+                stroke-width="1.6"
+                stroke-dasharray="4 6"
+                class="ring"
+              />
+              <circle
+                cx="392"
+                cy="92"
+                r="34"
+                fill="#ffffff"
+                fill-opacity="0.85"
+              />
+              <ellipse cx="392" cy="84" rx="15" ry="5.5" fill="#1456c8" />
+              <path
+                d="M377 84v10c0 3 7 5.5 15 5.5s15-2.500 15-5.500V84"
+                fill="none"
+                stroke="#1456c8"
+                stroke-width="3"
+              />
+              <path
+                d="M377 93c0 3 7 5.500 15 5.500s15-2.500 15-5.500"
+                fill="none"
+                stroke="#1456c8"
+                stroke-width="3"
+              />
+            </g>
+
+            <!-- shield -->
+            <g class="float-a">
+              <path
+                d="M240 118 L292 98 L344 118 V168 C344 204 318 226 292 238 C266 226 240 204 240 168 Z"
+                fill="url(#gShield)"
+                stroke="#ffffff"
+                stroke-width="3"
+              />
+              <path
+                d="M268 166 L286 184 L318 148"
+                fill="none"
+                stroke="#ffffff"
+                stroke-width="9"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </g>
+
+            <!-- laptop with certificate -->
+            <g class="float-b">
+              <rect
+                x="352"
+                y="188"
+                width="170"
+                height="108"
+                rx="8"
+                fill="#1b2a44"
+              />
+              <rect
+                x="359"
+                y="195"
+                width="156"
+                height="94"
+                rx="4"
+                fill="#f4f9ff"
+              />
+              <rect
+                x="368"
+                y="205"
+                width="86"
+                height="64"
+                rx="6"
+                fill="#ffffff"
+                stroke="#cfe0f5"
+              />
+              <circle cx="411" cy="226" r="11" fill="#1a9a52" />
+              <path
+                d="M405 226 L409.500 231 L418 221"
+                fill="none"
+                stroke="#fff"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <rect
+                x="382"
+                y="244"
+                width="58"
+                height="5"
+                rx="2.500"
+                fill="#0b2a6b"
+              />
+              <rect
+                x="390"
+                y="254"
+                width="42"
+                height="4"
+                rx="2"
+                fill="#9db5d6"
+              />
+              <rect
+                x="463"
+                y="212"
+                width="42"
+                height="42"
+                rx="5"
+                fill="#fff"
+                stroke="#cfe0f5"
+              />
+              <g fill="#0b2a6b">
+                <rect x="468" y="217" width="12" height="12" />
+                <rect x="488" y="217" width="12" height="12" />
+                <rect x="468" y="237" width="12" height="12" />
+                <rect x="485" y="234" width="5" height="5" />
+                <rect x="493" y="242" width="7" height="7" />
+              </g>
+              <path d="M340 296 H534 L520 312 H354 Z" fill="#c6d2e2" />
+            </g>
+
+            <!-- platform scale -->
+            <g class="float-a">
+              <path
+                d="M96 258 L250 258 L276 282 L70 282 Z"
+                fill="url(#gScale)"
+                stroke="#9fb0c8"
+              />
+              <rect
+                x="70"
+                y="282"
+                width="206"
+                height="46"
+                rx="8"
+                fill="url(#gBase)"
+              />
+              <rect
+                x="108"
+                y="291"
+                width="86"
+                height="26"
+                rx="5"
+                fill="#1d6bff"
+              />
+              <text
+                x="151"
+                y="310"
+                text-anchor="middle"
+                font-family="Space Grotesk, sans-serif"
+                font-size="17"
+                font-weight="700"
+                fill="#e6f1ff"
+              >
+                0.000
+              </text>
+              <circle cx="222" cy="298" r="5" fill="#f28c28" />
+              <circle cx="242" cy="298" r="5" fill="#4aa8ff" />
+              <rect
+                x="82"
+                y="326"
+                width="22"
+                height="9"
+                rx="3"
+                fill="#0e1b33"
+              />
+              <rect
+                x="242"
+                y="326"
+                width="22"
+                height="9"
+                rx="3"
+                fill="#0e1b33"
+              />
+            </g>
+
+            <!-- calibration weight -->
+            <g class="float-c">
+              <rect
+                x="296"
+                y="304"
+                width="40"
+                height="34"
+                rx="7"
+                fill="#aab6c6"
+              />
+              <rect
+                x="304"
+                y="294"
+                width="24"
+                height="14"
+                rx="6"
+                fill="#c3cddb"
+              />
+              <rect
+                x="296"
+                y="304"
+                width="40"
+                height="8"
+                rx="4"
+                fill="#ffffff"
+                fill-opacity="0.35"
+              />
+            </g>
+
+            <!-- ruler -->
+            <g transform="rotate(-8 140 372)">
+              <rect
+                x="40"
+                y="360"
+                width="190"
+                height="20"
+                rx="3"
+                fill="#dfe7f2"
+                stroke="#9fb0c8"
+              />
+              <g stroke="#51668a" stroke-width="1.200">
+                <path
+                  d="M52 360v8M64 360v5M76 360v8M88 360v5M100 360v8M112 360v5M124 360v8M136 360v5M148 360v8M160 360v5M172 360v8M184 360v5M196 360v8M208 360v5"
+                />
+              </g>
+            </g>
+
+            <!-- bottom wave with saffron / green accents -->
+            <path
+              d="M0 392 C120 360 220 420 340 396 C430 378 500 360 560 372 V440 H0 Z"
+              fill="url(#gWave)"
+            />
+            <path
+              d="M0 384 C120 352 220 412 340 388 C430 370 500 352 560 364"
+              fill="none"
+              stroke="#f28c28"
+              stroke-width="3.500"
+              stroke-linecap="round"
+            />
+            <path
+              d="M0 394 C120 362 220 422 340 398 C430 380 500 362 560 374"
+              fill="none"
+              stroke="#1a9a52"
+              stroke-width="3.500"
+              stroke-linecap="round"
+            />
+          </svg>
+
+          <span class="visual-chip chip-1"
+            ><i class="fa-solid fa-shield-halved"></i> Verified</span
+          >
+          <span class="visual-chip chip-2"
+            ><i class="fa-solid fa-qrcode"></i> QR certificate</span
+          >
         </div>
       </div>
     </header>
 
-    <main class="container layout-stack">
-      <section class="feature-grid three-col">
-        <article class="card feature-card">
-          <h3>Online applications</h3>
-          <p>
-            Submit and track verification requests digitally with structured
-            workflows.
-          </p>
-        </article>
-        <article class="card feature-card">
-          <h3>Field verification</h3>
-          <p>
-            LMO and GATC officers can inspect instruments, capture evidence, and
-            record results.
-          </p>
-        </article>
-        <article class="card feature-card">
-          <h3>QR-enabled certificates</h3>
-          <p>
-            Generate digital certificates with public verification routes and
-            expiry tracking.
-          </p>
-        </article>
-      </section>
-
-      <section id="how-it-works" class="info-panel card">
-        <div class="section-header">
-          <h2>Verification lifecycle</h2>
+    <!-- =====================================================
+         MAIN
+         ===================================================== -->
+    <main id="main-content" class="container">
+      <!-- Badge strip -->
+      <div class="badge-strip reveal stagger" role="list">
+        <div class="badge-item" role="listitem">
+          <div class="badge-icon">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <strong>Verified</strong>
         </div>
-        <ol class="timeline">
-          <li><span>1</span> User registers instrument</li>
-          <li><span>2</span> Submit verification application</li>
-          <li><span>3</span> Admin schedules inspection</li>
-          <li><span>4</span> LMO/GATC performs review</li>
-          <li><span>5</span> Digital certificate is issued</li>
-        </ol>
-      </section>
+        <div class="badge-item" role="listitem">
+          <div class="badge-icon"><i class="fa-solid fa-lock"></i></div>
+          <strong>Secure</strong>
+        </div>
+        <div class="badge-item" role="listitem">
+          <div class="badge-icon">
+            <i class="fa-solid fa-file-circle-check"></i>
+          </div>
+          <strong>Certified</strong>
+        </div>
+        <div class="badge-item" role="listitem">
+          <div class="badge-icon"><i class="fa-solid fa-gear"></i></div>
+          <strong>Compliant</strong>
+        </div>
+        <div class="badge-item" role="listitem">
+          <div class="badge-icon"><i class="fa-solid fa-eye"></i></div>
+          <strong>Transparent</strong>
+        </div>
+      </div>
 
-      <section class="feature-grid three-col stakeholder-grid">
-        <article class="feature-card">
-          <h3>Instrument owners</h3>
-          <p>
-            Register instruments, submit verification requests, and follow each
-            review stage.
-          </p>
-        </article>
-        <article class="feature-card">
-          <h3>LMO officers</h3>
-          <p>
-            Review assigned work, record inspection observations, and submit
-            field results.
-          </p>
-        </article>
-        <article class="feature-card">
-          <h3>GATC organizations</h3>
-          <p>
-            Complete assigned technical review when a case requires GATC
-            participation.
-          </p>
-        </article>
-      </section>
+      <div class="layout-stack" style="padding-inline: 0">
+        <!-- FEATURES -->
+        <section id="features" class="reveal" aria-labelledby="features-title">
+          <div class="section-intro">
+            <h2 id="features-title">
+              <span class="title-line">Everything in one digital workflow</span>
+            </h2>
+            <p>
+              From the first application to the final certificate, every step is
+              recorded, traceable and easy to follow.
+            </p>
+          </div>
 
-      <section id="faq" class="info-panel card">
-        <div class="section-header"><h2>Frequently asked questions</h2></div>
-        <details>
-          <summary>Is this an official government certificate?</summary>
-          <p>
-            No. Certificates from this prototype are system-generated
-            demonstrations and are not connected to an official government
-            registry.
-          </p>
-        </details>
-        <details>
-          <summary>How can I check a certificate?</summary>
-          <p>
-            Open public verification and enter the certificate number or scan
-            its QR code.
-          </p>
-        </details>
-        <details>
-          <summary>How do staff accounts become active?</summary>
-          <p>
-            LMO and GATC onboarding requires an administrator-issued invitation
-            key, document review, and approval.
-          </p>
-        </details>
-      </section>
+          <div class="three-col stagger">
+            <article class="feature-card">
+              <div class="feature-icon">
+                <i class="fa-solid fa-laptop-file"></i>
+              </div>
+              <h3>Online applications</h3>
+              <p>
+                Submit and track verification requests digitally through
+                structured workflows designed for transparency and
+                accountability.
+              </p>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-icon">
+                <i class="fa-solid fa-clipboard-check"></i>
+              </div>
+              <h3>Field verification</h3>
+              <p>
+                LMO and GATC officers can inspect instruments, capture evidence,
+                and record verification results digitally.
+              </p>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-icon"><i class="fa-solid fa-qrcode"></i></div>
+              <h3>QR-enabled certificates</h3>
+              <p>
+                Generate digital certificates with public verification routes,
+                traceability and expiry monitoring.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <!-- LIFECYCLE -->
+        <section id="how-it-works" class="info-panel reveal">
+          <div class="section-header">
+            <h2><span class="title-line">Verification lifecycle</span></h2>
+          </div>
+
+          <ol class="timeline">
+            <li><span>1</span>User registers instrument</li>
+            <li><span>2</span>Submit verification application</li>
+            <li><span>3</span>Admin schedules inspection</li>
+            <li><span>4</span>LMO/GATC performs review</li>
+            <li><span>5</span>Digital certificate is issued</li>
+          </ol>
+        </section>
+
+        <!-- STAKEHOLDERS -->
+        <section
+          id="roles"
+          class="info-panel reveal"
+          aria-labelledby="roles-title"
+        >
+          <div class="section-header">
+            <h2 id="roles-title">
+              <span class="title-line">Built for every stakeholder</span>
+            </h2>
+          </div>
+
+          <div class="role-tabs" role="tablist" aria-label="Stakeholder roles">
+            <button
+              class="role-tab"
+              role="tab"
+              id="tab-owner"
+              aria-selected="true"
+              aria-controls="panel-owner"
+              type="button"
+            >
+              <i class="fa-solid fa-user"></i> Instrument owners
+            </button>
+            <button
+              class="role-tab"
+              role="tab"
+              id="tab-lmo"
+              aria-selected="false"
+              aria-controls="panel-lmo"
+              type="button"
+              tabindex="-1"
+            >
+              <i class="fa-solid fa-user-check"></i> LMO officers
+            </button>
+            <button
+              class="role-tab"
+              role="tab"
+              id="tab-gatc"
+              aria-selected="false"
+              aria-controls="panel-gatc"
+              type="button"
+              tabindex="-1"
+            >
+              <i class="fa-solid fa-building-shield"></i> GATC organizations
+            </button>
+          </div>
+
+          <div
+            class="role-panel active"
+            role="tabpanel"
+            id="panel-owner"
+            aria-labelledby="tab-owner"
+          >
+            <div>
+              <h3>Instrument owners</h3>
+              <p>
+                Register instruments, submit verification requests, upload
+                required evidence and follow every review stage.
+              </p>
+            </div>
+            <ul class="role-points">
+              <li>
+                <i class="fa-solid fa-check"></i>Register and manage instruments
+              </li>
+              <li>
+                <i class="fa-solid fa-check"></i>Upload supporting evidence
+              </li>
+              <li>
+                <i class="fa-solid fa-check"></i>Track every review stage live
+              </li>
+            </ul>
+          </div>
+
+          <div
+            class="role-panel"
+            role="tabpanel"
+            id="panel-lmo"
+            aria-labelledby="tab-lmo"
+            hidden
+          >
+            <div>
+              <h3>LMO officers</h3>
+              <p>
+                Review assigned work, record inspection observations, capture
+                field evidence and submit verification results.
+              </p>
+            </div>
+            <ul class="role-points">
+              <li><i class="fa-solid fa-check"></i>See assigned inspections</li>
+              <li>
+                <i class="fa-solid fa-check"></i>Record observations on site
+              </li>
+              <li><i class="fa-solid fa-check"></i>Submit digital results</li>
+            </ul>
+          </div>
+
+          <div
+            class="role-panel"
+            role="tabpanel"
+            id="panel-gatc"
+            aria-labelledby="tab-gatc"
+            hidden
+          >
+            <div>
+              <h3>GATC organizations</h3>
+              <p>
+                Complete assigned technical review when a verification case
+                requires specialized GATC participation.
+              </p>
+            </div>
+            <ul class="role-points">
+              <li>
+                <i class="fa-solid fa-check"></i>Receive specialised cases
+              </li>
+              <li>
+                <i class="fa-solid fa-check"></i>Complete technical review
+              </li>
+              <li>
+                <i class="fa-solid fa-check"></i>Share findings with the
+                workflow
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- FAQ -->
+        <section id="faq" class="info-panel reveal">
+          <div class="section-header">
+            <h2><span class="title-line">Frequently asked questions</span></h2>
+          </div>
+
+          <details>
+            <summary>Is this an official government certificate?</summary>
+            <p>
+              No. Certificates from this prototype are system-generated
+              demonstrations and are not connected to an official government
+              registry.
+            </p>
+          </details>
+
+          <details>
+            <summary>How can I check a certificate?</summary>
+            <p>
+              Open public verification and enter the certificate number or scan
+              its QR code.
+            </p>
+          </details>
+
+          <details>
+            <summary>How do staff accounts become active?</summary>
+            <p>
+              LMO and GATC onboarding requires an administrator-issued
+              invitation key, document review and approval.
+            </p>
+          </details>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta-band reveal">
+          <div>
+            <h2>Ready to start a verification?</h2>
+            <p>Create an account, register your instrument and apply online.</p>
+          </div>
+          <div class="cta-row" style="margin-top: 0; animation: none">
+            <a href="./register.html" class="btn btn-primary">
+              <i class="fa-solid fa-user-plus"></i>
+              <span data-i18n="nav.register">Register</span>
+            </a>
+            <a href="./login.html" class="btn btn-secondary">
+              <i class="fa-solid fa-right-to-bracket"></i>
+              <span data-i18n="nav.login">Login</span>
+            </a>
+          </div>
+        </section>
+      </div>
     </main>
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
     <footer class="site-footer">
       <div class="container">
-        <span>e-Metrology demonstration</span
-        ><a href="./verify.html">Public certificate verification</a
-        ><a href="./login.html">Sign in</a>
+        <span>e-Metrology demonstration</span>
+        <a href="./verify.html">Public certificate verification</a>
+        <a href="./login.html">Sign in</a>
       </div>
     </footer>
+
+    <!-- Existing internationalization -->
     <script src="./js/i18n.js"></script>
+
+    <!-- =====================================================
+         INTERACTION LAYER
+         ===================================================== -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const reduce = window.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        ).matches;
+
+        /* ---------- Hero headline: word-by-word reveal ---------- */
+        const title = document.getElementById("heroTitle");
+        if (title && !reduce) {
+          let i = 0;
+          const wrap = (node, grad) => {
+            const words = node.textContent.trim().split(/\s+/);
+            node.textContent = "";
+            words.forEach((word) => {
+              const span = document.createElement("span");
+              span.className = "w" + (grad ? " grad" : "");
+              span.style.animationDelay = 0.12 * i++ + "s";
+              span.textContent = word;
+              node.appendChild(span);
+              node.appendChild(document.createTextNode(" "));
+            });
+          };
+          // first line (text node before <br>)
+          const first = title.firstChild;
+          const firstSpan = document.createElement("span");
+          firstSpan.textContent = first.textContent;
+          title.replaceChild(firstSpan, first);
+          wrap(firstSpan, false);
+          wrap(title.querySelector(".grad-wrap"), true);
+        } else if (title) {
+          title.querySelector(".grad-wrap").className = "grad-wrap grad";
+        }
+
+        /* ---------- Typewriter line ---------- */
+        const typedEl = document.getElementById("typed");
+        const phrases = [
+          "Verified instruments.",
+          "Secure digital records.",
+          "Certified with QR codes.",
+          "Compliant, transparent workflow.",
+        ];
+        if (typedEl) {
+          if (reduce) {
+            typedEl.textContent = phrases[0];
+          } else {
+            let p = 0,
+              c = 0,
+              deleting = false;
+            const tick = () => {
+              const text = phrases[p];
+              typedEl.textContent = text.slice(0, c);
+              if (!deleting && c < text.length) {
+                c++;
+                return setTimeout(tick, 55);
+              }
+              if (!deleting && c === text.length) {
+                deleting = true;
+                return setTimeout(tick, 1600);
+              }
+              if (deleting && c > 0) {
+                c--;
+                return setTimeout(tick, 28);
+              }
+              deleting = false;
+              p = (p + 1) % phrases.length;
+              setTimeout(tick, 350);
+            };
+            setTimeout(tick, 900);
+          }
+        }
+
+        /* ---------- Scroll reveal ---------- */
+        const revealEls = document.querySelectorAll(".reveal");
+        if ("IntersectionObserver" in window) {
+          const io = new IntersectionObserver(
+            (entries) =>
+              entries.forEach((e) => {
+                if (e.isIntersecting) {
+                  e.target.classList.add("visible");
+                  io.unobserve(e.target);
+                }
+              }),
+            { threshold: 0.12 },
+          );
+          revealEls.forEach((el) => io.observe(el));
+        } else {
+          revealEls.forEach((el) => el.classList.add("visible"));
+        }
+
+        /* ---------- Navbar: scrolled state, progress bar, scroll-spy ---------- */
+        const nav = document.getElementById("siteNav");
+        const bar = document.getElementById("scrollProgress");
+        const onScroll = () => {
+          nav.classList.toggle("scrolled", window.scrollY > 20);
+          const h = document.documentElement.scrollHeight - window.innerHeight;
+          bar.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + "%";
+        };
+        window.addEventListener("scroll", onScroll, { passive: true });
+        onScroll();
+
+        const spyLinks = document.querySelectorAll("[data-spy]");
+        if ("IntersectionObserver" in window) {
+          const spy = new IntersectionObserver(
+            (entries) =>
+              entries.forEach((e) => {
+                if (e.isIntersecting) {
+                  spyLinks.forEach((a) =>
+                    a.classList.toggle("active", a.dataset.spy === e.target.id),
+                  );
+                }
+              }),
+            { rootMargin: "-40% 0px -55% 0px" },
+          );
+          ["features", "how-it-works", "roles", "faq"].forEach((id) => {
+            const el = document.getElementById(id);
+            if (el) spy.observe(el);
+          });
+        }
+
+        /* ---------- Mobile menu ---------- */
+        const menuBtn = document.getElementById("menuBtn");
+        const mainNav = document.getElementById("mainNav");
+        const setMenu = (open) => {
+          mainNav.classList.toggle("open", open);
+          menuBtn.setAttribute("aria-expanded", open);
+          menuBtn.querySelector("i").className = open
+            ? "fa-solid fa-xmark"
+            : "fa-solid fa-bars";
+        };
+        menuBtn.addEventListener("click", () =>
+          setMenu(!mainNav.classList.contains("open")),
+        );
+        mainNav
+          .querySelectorAll("a")
+          .forEach((a) => a.addEventListener("click", () => setMenu(false)));
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") setMenu(false);
+        });
+
+        /* ---------- Role tabs ---------- */
+        const tabs = Array.from(document.querySelectorAll(".role-tab"));
+        const panels = Array.from(document.querySelectorAll(".role-panel"));
+        const activate = (tab) => {
+          tabs.forEach((t) => {
+            const sel = t === tab;
+            t.setAttribute("aria-selected", sel);
+            t.tabIndex = sel ? 0 : -1;
+          });
+          panels.forEach((p) => {
+            const show = p.id === tab.getAttribute("aria-controls");
+            p.classList.toggle("active", show);
+            p.hidden = !show;
+          });
+        };
+        tabs.forEach((tab, i) => {
+          tab.addEventListener("click", () => activate(tab));
+          tab.addEventListener("keydown", (e) => {
+            if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+            const n =
+              e.key === "ArrowRight"
+                ? tabs[(i + 1) % tabs.length]
+                : tabs[(i - 1 + tabs.length) % tabs.length];
+            n.focus();
+            activate(n);
+          });
+        });
+
+        /* ---------- Theme toggle ---------- */
+        const root = document.documentElement;
+        const meta = document.querySelector('meta[name="theme-color"]');
+        const apply = (t) => {
+          root.setAttribute("data-theme", t);
+          if (meta)
+            meta.setAttribute("content", t === "dark" ? "#07111f" : "#f3f8ff");
+        };
+        try {
+          const saved = localStorage.getItem("em-theme");
+          if (saved === "light" || saved === "dark") apply(saved);
+        } catch (e) {}
+        document.getElementById("themeToggle").addEventListener("click", () => {
+          const next =
+            root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+          apply(next);
+          try {
+            localStorage.setItem("em-theme", next);
+          } catch (e) {}
+        });
+      });
+    </script>
   </body>
 </html>

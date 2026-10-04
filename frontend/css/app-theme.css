@@ -1,0 +1,903 @@
+/* e-Metrology app pages (dashboard, instruments, applications) — shared theme */
+/* =========================================================
+   e-METROLOGY DASHBOARD — same theme as the landing page.
+   Every rule is scoped with body.dash.dash.dash so shared style.css
+   cannot override it. IDs / classes used by JS are untouched.
+   ========================================================= */
+html:root {
+  --bg: #f3f8ff;
+  --bg-2: #e6f0fc;
+  --surface: #ffffff;
+  --surface-2: rgba(11, 42, 107, 0.04);
+  --text: #0b1b3a;
+  --text-2: #34496b;
+  --muted: #5d7190;
+  --navy: #0b2a6b;
+  --blue: #1456c8;
+  --sky: #4aa8ff;
+  --saffron: #f28c28;
+  --green: #1a9a52;
+  --red: #d6403a;
+  --border: rgba(11, 42, 107, 0.12);
+  --shadow: 0 24px 60px rgba(20, 60, 130, 0.15);
+  --shadow-sm: 0 10px 30px rgba(20, 60, 130, 0.07);
+  --nav-bg: rgba(255, 255, 255, 0.82);
+  --radius: 22px;
+}
+html:root[data-theme="dark"] {
+  --bg: #06101d;
+  --bg-2: #0a1728;
+  --surface: #0f2038;
+  --surface-2: rgba(255, 255, 255, 0.04);
+  --text: #f3f8ff;
+  --text-2: #b6c6da;
+  --muted: #8a9db6;
+  --navy: #8fc3ff;
+  --blue: #4f8bff;
+  --sky: #27d3ff;
+  --saffron: #ffa94d;
+  --green: #32e6a1;
+  --red: #ff7a72;
+  --border: rgba(255, 255, 255, 0.1);
+  --shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 10px 30px rgba(0, 0, 0, 0.25);
+  --nav-bg: rgba(8, 18, 32, 0.8);
+}
+
+body.dash.dash.dash,
+body.dash.dash.dash * {
+  box-sizing: border-box;
+}
+body.dash.dash.dash {
+  display: grid;
+  grid-template-columns: 270px minmax(0, 1fr);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", "Noto Sans Devanagari", system-ui, sans-serif;
+  line-height: 1.6;
+  color: var(--text);
+  background:
+    radial-gradient(
+      circle at 10% 0%,
+      rgba(74, 168, 255, 0.16),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 95% 10%,
+      rgba(242, 140, 40, 0.1),
+      transparent 30%
+    ),
+    linear-gradient(180deg, var(--bg), var(--bg-2));
+  background-attachment: fixed;
+  transition:
+    background 0.4s ease,
+    color 0.4s ease;
+}
+body.dash.dash.dash h1,
+body.dash.dash.dash h2,
+body.dash.dash.dash h3 {
+  font-family: "Space Grotesk", sans-serif;
+  color: var(--text);
+  text-transform: none;
+  letter-spacing: -0.02em;
+}
+body.dash.dash.dash :focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+body.dash.dash.dash .hidden {
+  display: none !important;
+}
+
+/* ---------- Sidebar ---------- */
+body.dash.dash.dash .sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding: 24px 18px;
+  background: var(--nav-bg);
+  backdrop-filter: blur(18px) saturate(1.4);
+  border: 0;
+  border-right: 1px solid var(--border);
+  border-radius: 0;
+  color: var(--text);
+  box-shadow: none;
+  overflow-y: auto;
+}
+body.dash.dash.dash .sidebar::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -1px;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    var(--saffron) 0 33%,
+    transparent 33% 66%,
+    var(--green) 66%
+  );
+  opacity: 0.85;
+  pointer-events: none;
+}
+body.dash.dash.dash .brand-panel {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 4px 8px;
+  background: none;
+  border: 0;
+  box-shadow: none;
+}
+body.dash.dash.dash .brand-mark {
+  width: 46px;
+  height: 46px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 14px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  -webkit-text-fill-color: #fff;
+  background: linear-gradient(135deg, var(--navy), var(--blue));
+  box-shadow: 0 8px 22px rgba(20, 86, 200, 0.35);
+}
+:root[data-theme="dark"] body.dash.dash.dash .brand-mark {
+  color: #03111d;
+  -webkit-text-fill-color: #03111d;
+  background: linear-gradient(135deg, var(--sky), #9fe9ff);
+}
+body.dash.dash.dash .brand-panel strong {
+  display: block;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--text);
+  text-transform: none;
+}
+body.dash.dash.dash .brand-panel small {
+  display: block;
+  font-size: 11.5px;
+  color: var(--muted);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+body.dash.dash.dash .nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+body.dash.dash.dash .nav-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--text-2);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+body.dash.dash.dash .nav-link::before {
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  width: 18px;
+  text-align: center;
+  color: var(--muted);
+  transition: color 0.25s ease;
+}
+body.dash.dash.dash .nav-link[href$="dashboard.html"]::before {
+  content: "\f3fd";
+}
+body.dash.dash.dash .nav-link[href$="instruments.html"]::before {
+  content: "\f24e";
+}
+body.dash.dash.dash .nav-link[href$="applications.html"]::before {
+  content: "\f15c";
+}
+body.dash.dash.dash .nav-link[href$="verify.html"]::before {
+  content: "\f029";
+}
+body.dash.dash.dash .nav-button::before {
+  content: "\f2f5";
+}
+body.dash.dash.dash .nav-link:hover {
+  background: var(--surface-2);
+  color: var(--blue);
+  transform: translateX(3px);
+}
+body.dash.dash.dash .nav-link:hover::before,
+body.dash.dash.dash .nav-link.active::before {
+  color: var(--blue);
+}
+body.dash.dash.dash .nav-link.active {
+  background: rgba(20, 86, 200, 0.1);
+  color: var(--blue);
+}
+body.dash.dash.dash .nav-link.active::after {
+  content: "";
+  position: absolute;
+  left: -18px;
+  top: 10px;
+  bottom: 10px;
+  width: 4px;
+  border-radius: 0 4px 4px 0;
+  background: linear-gradient(180deg, var(--saffron), var(--blue));
+}
+body.dash.dash.dash .nav-button {
+  margin-top: auto;
+  border-top: 1px solid var(--border);
+  border-radius: 0 0 12px 12px;
+}
+
+/* ---------- Main ---------- */
+body.dash.dash.dash .main-panel {
+  min-width: 0;
+  padding: 28px clamp(18px, 3vw, 44px) 60px;
+  background: transparent;
+}
+body.dash.dash.dash .topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 0 26px;
+  margin: 0;
+  background: none;
+  border: 0;
+  box-shadow: none;
+}
+body.dash.dash.dash .topbar .eyebrow {
+  margin: 0 0 4px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--blue);
+  background: none;
+  -webkit-text-fill-color: currentColor;
+}
+body.dash.dash.dash .topbar h2 {
+  margin: 0;
+  font-size: clamp(26px, 3.6vw, 36px);
+  letter-spacing: -0.035em;
+  color: var(--navy);
+}
+body.dash.dash.dash .top-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+body.dash.dash.dash .icon-btn {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease;
+}
+body.dash.dash.dash .icon-btn:hover {
+  transform: rotate(12deg);
+  border-color: var(--blue);
+}
+body.dash.dash.dash .badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid rgba(20, 86, 200, 0.22);
+  border-radius: 999px;
+  background: rgba(20, 86, 200, 0.07);
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* ---------- Stat cards ---------- */
+body.dash.dash.dash .summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0 0 18px;
+}
+body.dash.dash.dash .stat-card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 22px 22px 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+body.dash.dash.dash .stat-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--blue), var(--sky));
+}
+body.dash.dash.dash .stat-card.warning::before {
+  background: linear-gradient(90deg, var(--saffron), #ffcf8a);
+}
+body.dash.dash.dash .stat-card.success::before {
+  background: linear-gradient(90deg, var(--green), #6fe0a6);
+}
+body.dash.dash.dash .stat-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(20, 86, 200, 0.35);
+  box-shadow: var(--shadow);
+}
+body.dash.dash.dash .stat-card .label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: none;
+  letter-spacing: 0;
+}
+body.dash.dash.dash .stat-card strong {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 40px;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  color: var(--navy);
+}
+body.dash.dash.dash .stat-card.warning strong {
+  color: var(--saffron);
+}
+body.dash.dash.dash .stat-card.success strong {
+  color: var(--green);
+}
+
+/* ---------- Panels ---------- */
+body.dash.dash.dash .content-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin: 0 0 18px;
+}
+body.dash.dash.dash .card,
+body.dash.dash.dash .panel-card,
+body.dash.dash.dash .staff-workspace,
+body.dash.dash.dash .admin-workspace {
+  padding: 28px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  color: var(--text);
+}
+body.dash.dash.dash .workflow-section,
+body.dash.dash.dash .staff-workspace,
+body.dash.dash.dash .admin-workspace {
+  margin: 0 0 18px;
+}
+body.dash.dash.dash .section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+body.dash.dash.dash .section-head h3,
+body.dash.dash.dash .section-head h2 {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  padding-bottom: 10px;
+  font-size: 21px;
+  color: var(--navy);
+}
+body.dash.dash.dash .section-head h3::after,
+body.dash.dash.dash .section-head h2::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 56px;
+  height: 3px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--saffron), var(--blue), var(--green));
+}
+body.dash.dash.dash .section-head .eyebrow {
+  margin: 0 0 4px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--blue);
+}
+body.dash.dash.dash .field-help {
+  margin: 6px 0 0;
+  padding: 18px;
+  border: 1px dashed var(--border);
+  border-radius: 14px;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: 14px;
+  text-align: center;
+}
+
+/* ---------- Lists rendered by dashboard.js ---------- */
+body.dash.dash.dash .activity-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+body.dash.dash.dash .activity-list > li,
+body.dash.dash.dash .application-list > *,
+body.dash.dash.dash .certificate-list > * {
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface-2);
+  color: var(--text-2);
+  font-size: 14px;
+  transition:
+    border-color 0.25s ease,
+    transform 0.25s ease;
+}
+body.dash.dash.dash .activity-list > li:hover,
+body.dash.dash.dash .application-list > *:hover,
+body.dash.dash.dash .certificate-list > *:hover {
+  border-color: rgba(20, 86, 200, 0.4);
+  transform: translateY(-2px);
+}
+body.dash.dash.dash .application-list,
+body.dash.dash.dash .certificate-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+body.dash.dash.dash .activity-list strong,
+body.dash.dash.dash .application-list strong,
+body.dash.dash.dash .certificate-list strong {
+  color: var(--text);
+}
+body.dash.dash.dash .activity-list small,
+body.dash.dash.dash .application-list small,
+body.dash.dash.dash .certificate-list small {
+  color: var(--muted);
+}
+
+/* Status chart bars (generic, tolerant of JS markup) */
+body.dash.dash.dash .status-chart {
+  display: grid;
+  gap: 12px;
+}
+body.dash.dash.dash .status-chart > * {
+  color: var(--text-2);
+  font-size: 14px;
+}
+body.dash.dash.dash .status-chart [class*="bar"],
+body.dash.dash.dash .status-chart progress {
+  accent-color: var(--blue);
+}
+body.dash.dash.dash .status-chart [class*="fill"],
+body.dash.dash.dash .status-chart [class*="bar"] > span {
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--blue), var(--sky));
+}
+
+/* ---------- Alerts ---------- */
+body.dash.dash.dash .alert {
+  margin: 0 0 18px;
+  padding: 14px 18px;
+  border: 1px solid rgba(20, 86, 200, 0.25);
+  border-left: 4px solid var(--blue);
+  border-radius: 14px;
+  background: rgba(20, 86, 200, 0.08);
+  color: var(--text);
+  font-size: 14px;
+}
+body.dash.dash.dash .alert.success,
+body.dash.dash.dash .alert.alert-success {
+  border-color: rgba(26, 154, 82, 0.3);
+  border-left-color: var(--green);
+  background: rgba(26, 154, 82, 0.1);
+}
+body.dash.dash.dash .alert.error,
+body.dash.dash.dash .alert.alert-error,
+body.dash.dash.dash .alert.danger {
+  border-color: rgba(214, 64, 58, 0.3);
+  border-left-color: var(--red);
+  background: rgba(214, 64, 58, 0.1);
+}
+
+/* ---------- Admin ---------- */
+body.dash.dash.dash .admin-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+body.dash.dash.dash .admin-section {
+  min-width: 0;
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--surface-2);
+}
+body.dash.dash.dash .admin-applications-section {
+  grid-column: 1 / -1;
+}
+body.dash.dash.dash .admin-section h3 {
+  margin: 0 0 16px;
+  font-size: 18px;
+  color: var(--navy);
+}
+body.dash.dash.dash .admin-section .admin-subheading {
+  margin-top: 26px;
+}
+
+/* ---------- Forms ---------- */
+body.dash.dash.dash .form-grid {
+  display: grid;
+  gap: 14px;
+}
+body.dash.dash.dash .form-grid.two-up {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+body.dash.dash.dash .field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+body.dash.dash.dash .field-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-2);
+  text-transform: none;
+  letter-spacing: 0;
+}
+body.dash.dash.dash input,
+body.dash.dash.dash select,
+body.dash.dash.dash textarea {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+body.dash.dash.dash input:focus,
+body.dash.dash.dash select:focus,
+body.dash.dash.dash textarea:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(20, 86, 200, 0.18);
+}
+
+/* ---------- Buttons (also used by JS-rendered actions) ---------- */
+body.dash.dash.dash .btn {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 11px 20px;
+  border-radius: 12px;
+  font: inherit;
+  font-size: 14px;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+body.dash.dash.dash .btn:hover {
+  transform: translateY(-2px);
+}
+body.dash.dash.dash .btn-primary {
+  border: 0;
+  background: linear-gradient(135deg, var(--blue), var(--navy)) !important;
+  color: #fff !important;
+  font-weight: 700;
+  box-shadow: 0 12px 28px rgba(20, 86, 200, 0.32);
+}
+:root[data-theme="dark"] body.dash.dash.dash .btn-primary {
+  background: linear-gradient(135deg, var(--sky), var(--blue)) !important;
+  color: #03111d !important;
+}
+body.dash.dash.dash .btn-primary:hover {
+  box-shadow: 0 18px 38px rgba(20, 86, 200, 0.45);
+}
+body.dash.dash.dash .btn-secondary,
+body.dash.dash.dash .btn-outline {
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text) !important;
+  font-weight: 600;
+}
+body.dash.dash.dash .btn-secondary:hover,
+body.dash.dash.dash .btn-outline:hover {
+  border-color: var(--blue);
+  color: var(--blue) !important;
+}
+body.dash.dash.dash .full-width {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+/* Language switcher injected by i18n.js */
+body.dash.dash.dash
+  :is(div, span, ul, li)[class*="lang"]:not(.language-dialog) {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+}
+body.dash.dash.dash :is(div, span, ul, li)[class*="lang"] :is(button, a) {
+  padding: 6px 13px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-2);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+body.dash.dash.dash
+  :is(div, span, ul, li)[class*="lang"]
+  :is(button, a):is(.active, [aria-pressed="true"], [aria-current]) {
+  background: linear-gradient(135deg, var(--blue), var(--navy));
+  color: #fff;
+}
+.language-dialog {
+  background: var(--surface);
+  color: var(--text);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1100px) {
+  body.dash.dash.dash .summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  body.dash.dash.dash .content-grid,
+  body.dash.dash.dash .admin-columns {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 860px) {
+  body.dash.dash.dash {
+    grid-template-columns: 1fr;
+  }
+  body.dash.dash.dash .sidebar {
+    position: sticky;
+    z-index: 50;
+    height: auto;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+  }
+  body.dash.dash.dash .sidebar::after {
+    display: none;
+  }
+  body.dash.dash.dash .brand-panel small {
+    display: none;
+  }
+  body.dash.dash.dash .brand-mark {
+    width: 38px;
+    height: 38px;
+    font-size: 20px;
+  }
+  body.dash.dash.dash .nav-list {
+    flex-direction: row;
+    gap: 4px;
+    flex: none;
+  }
+  body.dash.dash.dash .nav-link {
+    width: auto;
+    padding: 9px 12px;
+    white-space: nowrap;
+  }
+  body.dash.dash.dash .nav-link::before {
+    display: none;
+  }
+  body.dash.dash.dash .nav-link.active::after {
+    display: none;
+  }
+  body.dash.dash.dash .nav-button {
+    margin-top: 0;
+    border: 0;
+    border-radius: 12px;
+  }
+}
+@media (max-width: 560px) {
+  body.dash.dash.dash .summary-grid,
+  body.dash.dash.dash .form-grid.two-up {
+    grid-template-columns: 1fr;
+  }
+  body.dash.dash.dash .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  body.dash.dash.dash .card,
+  body.dash.dash.dash .panel-card,
+  body.dash.dash.dash .staff-workspace,
+  body.dash.dash.dash .admin-workspace {
+    padding: 20px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  body.dash.dash.dash *,
+  body.dash.dash.dash *::before,
+  body.dash.dash.dash *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------- Shared additions for Instruments / Applications ---------- */
+body.dash.dash.dash .table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+}
+body.dash.dash.dash table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  font-size: 14px;
+  color: var(--text-2);
+}
+body.dash.dash.dash thead th {
+  padding: 14px 16px;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+  color: var(--navy);
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: left;
+  text-transform: none;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+body.dash.dash.dash tbody td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+body.dash.dash.dash tbody tr:last-child td {
+  border-bottom: 0;
+}
+body.dash.dash.dash tbody tr {
+  transition: background 0.2s ease;
+}
+body.dash.dash.dash tbody tr:hover {
+  background: var(--surface-2);
+}
+body.dash.dash.dash td .badge {
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+body.dash.dash.dash input[type="file"] {
+  padding: 12px;
+  border-style: dashed;
+  border-width: 1.5px;
+  background: var(--surface-2);
+  cursor: pointer;
+}
+body.dash.dash.dash input[type="file"]::file-selector-button {
+  margin-right: 12px;
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--blue), var(--navy));
+  color: #fff;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+body.dash.dash.dash textarea {
+  resize: vertical;
+  min-height: 96px;
+}
+body.dash.dash.dash .photo-preview {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+body.dash.dash.dash .photo-preview:empty {
+  display: none;
+}
+body.dash.dash.dash .photo-preview img,
+body.dash.dash.dash .photo-preview > * {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface-2);
+  font-size: 12px;
+  color: var(--text-2);
+}
+body.dash.dash.dash .photo-preview img {
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+body.dash.dash.dash .card form + .alert,
+body.dash.dash.dash .card .alert {
+  margin: 16px 0 0;
+}
+body.dash.dash.dash .top-actions .language-switch {
+  flex: none;
+}
+@media (max-width: 560px) {
+  body.dash.dash.dash .top-actions {
+    flex-wrap: wrap;
+  }
+}
+
+:root[lang="hi"] body.dash.dash.dash h1,
+:root[lang="hi"] body.dash.dash.dash h2,
+:root[lang="hi"] body.dash.dash.dash h3,
+:root[lang="hi"] body.dash.dash.dash .stat-card strong,
+:root[lang="hi"] body.dash.dash.dash thead th {
+  font-family: "Noto Sans Devanagari", "Space Grotesk", sans-serif;
+  letter-spacing: 0;
+}
+:root[lang="hi"] body.dash.dash.dash .nav-link,
+:root[lang="hi"] body.dash.dash.dash .btn {
+  line-height: 1.5;
+}

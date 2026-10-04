@@ -1,37 +1,1421 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f3f8ff" />
     <title>Certificate Verification | e-Metrology</title>
+
+    <!-- Apply saved theme before paint (shared with the other pages) -->
+    <script>
+      try {
+        var t = localStorage.getItem("em-theme");
+        if (t === "dark" || t === "light")
+          document.documentElement.setAttribute("data-theme", t);
+      } catch (e) {}
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <!-- Existing shared stylesheet (kept so the flow stays consistent) -->
     <link rel="stylesheet" href="./css/style.css" />
+
+    <style>
+      /* =========================================================
+         e-METROLOGY — VERIFY PAGE (UI ONLY)
+         All ids, data-i18n keys and scripts unchanged.
+         ========================================================= */
+
+      :root {
+        --bg: #f3f8ff;
+        --bg-2: #e6f0fc;
+        --surface: #ffffff;
+        --surface-2: rgba(11, 42, 107, 0.045);
+        --field-bg: #ffffff;
+        --text: #0b1b3a;
+        --text-2: #34496b;
+        --muted: #5d7190;
+        --navy: #0b2a6b;
+        --blue: #1456c8;
+        --sky: #4aa8ff;
+        --saffron: #f28c28;
+        --green: #1a9a52;
+        --border: rgba(11, 42, 107, 0.14);
+        --line: rgba(11, 42, 107, 0.12);
+        --panel: #ffffff;
+        --shadow: 0 24px 60px rgba(20, 60, 130, 0.15);
+        --nav-bg: rgba(255, 255, 255, 0.82);
+        --danger: #b91c1c;
+        --danger-soft: #fef2f2;
+        --success: #0f766e;
+        --success-soft: #e8f7f4;
+        --warning: #b45309;
+        --warning-soft: #fff7ed;
+      }
+
+      :root[data-theme="dark"] {
+        --bg: #06101d;
+        --bg-2: #0a1728;
+        --surface: #0f2038;
+        --surface-2: rgba(255, 255, 255, 0.05);
+        --field-bg: rgba(255, 255, 255, 0.04);
+        --text: #f3f8ff;
+        --text-2: #b6c6da;
+        --muted: #8a9db6;
+        --navy: #8fc3ff;
+        --blue: #4f8bff;
+        --sky: #27d3ff;
+        --saffron: #ffa94d;
+        --green: #32e6a1;
+        --border: rgba(255, 255, 255, 0.13);
+        --line: rgba(255, 255, 255, 0.1);
+        --panel: #0f2038;
+        --shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+        --nav-bg: rgba(8, 18, 32, 0.82);
+        --danger: #ff8f8f;
+        --danger-soft: rgba(255, 110, 110, 0.12);
+        --success: #32e6a1;
+        --success-soft: rgba(50, 230, 161, 0.12);
+        --warning: #ffc069;
+        --warning-soft: rgba(255, 181, 71, 0.12);
+      }
+
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 90px;
+      }
+
+      body.auth-body {
+        display: block;
+        place-items: unset;
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+        font-family: "Inter", system-ui, sans-serif;
+        color: var(--text);
+        line-height: 1.6;
+        overflow-x: hidden;
+        background:
+          radial-gradient(
+            circle at 10% 0%,
+            rgba(74, 168, 255, 0.16),
+            transparent 35%
+          ),
+          radial-gradient(
+            circle at 95% 10%,
+            rgba(242, 140, 40, 0.1),
+            transparent 30%
+          ),
+          linear-gradient(180deg, var(--bg), var(--bg-2));
+        background-attachment: fixed;
+        transition:
+          background 0.4s ease,
+          color 0.4s ease;
+      }
+
+      a {
+        color: inherit;
+      }
+      :focus-visible {
+        outline: 2px solid var(--blue);
+        outline-offset: 3px;
+        border-radius: 6px;
+      }
+
+      .skip-link {
+        position: absolute;
+        left: 16px;
+        top: -60px;
+        z-index: 200;
+        padding: 10px 16px;
+        border-radius: 10px;
+        background: var(--blue);
+        color: #fff;
+        font-weight: 700;
+        text-decoration: none;
+        transition: top 0.2s ease;
+      }
+      .skip-link:focus {
+        top: 12px;
+      }
+
+      .notice-strip {
+        padding: 8px 16px;
+        text-align: center;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-2);
+        background: linear-gradient(
+          90deg,
+          rgba(242, 140, 40, 0.14),
+          rgba(74, 168, 255, 0.12)
+        );
+        border-bottom: 1px solid var(--border);
+      }
+      .notice-strip i {
+        color: var(--saffron);
+        margin-right: 6px;
+      }
+
+      /* =================== BUTTONS =================== */
+      .btn {
+        position: relative;
+        overflow: hidden;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        padding: 12px 22px;
+        border-radius: 12px;
+        font: inherit;
+        font-size: 14px;
+        text-decoration: none;
+        cursor: pointer;
+        transition:
+          transform 0.25s ease,
+          box-shadow 0.25s ease,
+          border-color 0.25s ease;
+      }
+      .btn::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        transform: translateX(-110%);
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.35),
+          transparent
+        );
+        transition: transform 0.6s ease;
+      }
+      .btn:hover::before {
+        transform: translateX(110%);
+      }
+      .btn:hover {
+        transform: translateY(-2px);
+      }
+      .btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .btn-primary {
+        border: 0;
+        background: linear-gradient(
+          135deg,
+          var(--blue),
+          var(--navy)
+        ) !important;
+        color: #fff !important;
+        font-weight: 700;
+        box-shadow: 0 12px 28px rgba(20, 86, 200, 0.32);
+      }
+      :root[data-theme="dark"] .btn-primary {
+        background: linear-gradient(135deg, var(--sky), var(--blue)) !important;
+        color: #03111d !important;
+      }
+      .btn-primary:hover {
+        box-shadow: 0 18px 38px rgba(20, 86, 200, 0.45);
+      }
+
+      .btn-secondary {
+        border: 1.5px solid var(--border);
+        background: var(--surface);
+        color: var(--text) !important;
+        font-weight: 600;
+      }
+      .btn-secondary:hover {
+        border-color: var(--blue);
+        color: var(--blue) !important;
+      }
+
+      .icon-btn {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: var(--surface);
+        color: var(--text);
+        cursor: pointer;
+        transition:
+          transform 0.25s ease,
+          border-color 0.25s ease;
+      }
+      .icon-btn:hover {
+        transform: translateY(-2px) rotate(12deg);
+        border-color: var(--blue);
+      }
+      .menu-btn {
+        display: none;
+      }
+
+      /* =================== NAVBAR (isolated from style.css) =================== */
+      #siteNav,
+      #siteNav * {
+        box-sizing: border-box;
+      }
+
+      #siteNav {
+        position: sticky;
+        top: 0;
+        z-index: 120;
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        border-bottom: 1px solid var(--border);
+        border-radius: 0;
+        background: var(--nav-bg);
+        backdrop-filter: blur(18px) saturate(1.4);
+        transition: box-shadow 0.3s ease;
+      }
+      #siteNav.scrolled {
+        box-shadow: 0 10px 35px rgba(10, 40, 90, 0.14);
+      }
+      #siteNav::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -1px;
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          var(--saffron) 0 33%,
+          transparent 33% 66%,
+          var(--green) 66%
+        );
+        opacity: 0.85;
+      }
+
+      #siteNav .em-wrap {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        gap: 24px;
+        width: min(1240px, 100% - 40px);
+        max-width: none;
+        min-height: 76px;
+        margin: 0 auto;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+        transition: min-height 0.3s ease;
+      }
+      #siteNav.scrolled .em-wrap {
+        min-height: 64px;
+      }
+
+      #siteNav .brand-block {
+        display: flex;
+        flex: none;
+        align-items: center;
+        gap: 13px;
+        margin: 0;
+        padding: 0;
+        text-decoration: none;
+      }
+      #siteNav .brand-mark {
+        width: 46px;
+        height: 46px;
+        flex: none;
+        display: grid;
+        place-items: center;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 14px;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 1;
+        color: #fff;
+        -webkit-text-fill-color: #fff;
+        background: linear-gradient(135deg, var(--navy), var(--blue));
+        box-shadow: 0 8px 22px rgba(20, 86, 200, 0.35);
+        animation: markPulse 3s ease-in-out infinite;
+      }
+      :root[data-theme="dark"] #siteNav .brand-mark {
+        color: #03111d;
+        -webkit-text-fill-color: #03111d;
+        background: linear-gradient(135deg, var(--sky), #9fe9ff);
+      }
+      @keyframes markPulse {
+        0%,
+        100% {
+          box-shadow: 0 6px 18px rgba(20, 86, 200, 0.25);
+        }
+        50% {
+          box-shadow: 0 8px 34px rgba(20, 86, 200, 0.5);
+        }
+      }
+      #siteNav .eyebrow {
+        margin: 0;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 18px;
+        font-weight: 800;
+        line-height: 1.2;
+        letter-spacing: -0.01em;
+        text-transform: none;
+        white-space: nowrap;
+        opacity: 1;
+        color: var(--text);
+      }
+      #siteNav .subeyebrow {
+        margin: 2px 0 0;
+        font-size: 11.5px;
+        font-weight: 500;
+        line-height: 1.3;
+        text-transform: none;
+        white-space: nowrap;
+        opacity: 1;
+        color: var(--muted);
+      }
+
+      #siteNav .main-nav {
+        position: static;
+        display: flex;
+        flex: 1 1 auto;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+        min-width: 0;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        background: none;
+      }
+      #siteNav .main-nav a:not(.btn) {
+        position: relative;
+        display: inline-block;
+        padding: 10px 14px;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.2;
+        white-space: nowrap;
+        color: var(--text-2);
+        text-decoration: none;
+        border-radius: 10px;
+        transition: color 0.25s ease;
+      }
+      #siteNav .main-nav a:not(.btn)::after {
+        content: "";
+        position: absolute;
+        left: 14px;
+        right: 14px;
+        bottom: 4px;
+        height: 2px;
+        border-radius: 2px;
+        background: linear-gradient(90deg, var(--saffron), var(--blue));
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.3s ease;
+      }
+      #siteNav .main-nav a:not(.btn):hover,
+      #siteNav .main-nav a.active {
+        color: var(--blue);
+      }
+      #siteNav .main-nav a:not(.btn):hover::after,
+      #siteNav .main-nav a.active::after {
+        transform: scaleX(1);
+      }
+      #siteNav .main-nav a.mobile-only {
+        display: none;
+      }
+
+      #siteNav .nav-actions {
+        display: flex;
+        flex: none;
+        flex-wrap: nowrap;
+        align-items: center;
+        gap: 10px;
+        margin: 0 0 0 auto;
+        padding: 0;
+      }
+      #siteNav .nav-actions .btn {
+        padding: 10px 20px;
+        font-size: 14px;
+        line-height: 1.2;
+        white-space: nowrap;
+      }
+      #siteNav .nav-sep {
+        width: 1px;
+        height: 26px;
+        margin-inline: 2px;
+        background: var(--border);
+      }
+
+      /* language switcher injected by i18n.js */
+      #siteNav .language-switch {
+        flex: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        margin: 0;
+        padding: 3px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: var(--surface);
+        color: var(--text-2);
+      }
+      #siteNav .language-switch button {
+        margin: 0;
+        padding: 6px 13px;
+        border: 0;
+        border-radius: 999px;
+        background: transparent;
+        color: var(--text-2);
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.2;
+        cursor: pointer;
+        white-space: nowrap;
+        transition:
+          background 0.2s ease,
+          color 0.2s ease;
+      }
+      #siteNav .language-switch button:hover {
+        background: rgba(20, 86, 200, 0.1);
+        color: var(--blue);
+      }
+      #siteNav .language-switch button[aria-pressed="true"] {
+        background: linear-gradient(135deg, var(--blue), var(--navy));
+        color: #fff;
+      }
+      :root[data-theme="dark"]
+        #siteNav
+        .language-switch
+        button[aria-pressed="true"] {
+        color: #03111d;
+        background: linear-gradient(135deg, var(--sky), var(--blue));
+      }
+
+      .language-dialog {
+        background: var(--surface);
+        color: var(--text);
+      }
+      .language-dialog h2 {
+        color: var(--text);
+      }
+
+      /* =================== PAGE LAYOUT =================== */
+      main.auth-screen {
+        display: block;
+        width: min(1240px, 100% - 40px);
+        max-width: none;
+        margin: 0 auto;
+        padding: 56px 0 80px;
+      }
+
+      .verify-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+        gap: 28px;
+        align-items: start;
+      }
+
+      /* ---- Aside ---- */
+      .verify-aside {
+        position: sticky;
+        top: 96px;
+        overflow: hidden;
+        padding: 36px 32px 38px;
+        border-radius: 26px;
+        color: #fff;
+        background: linear-gradient(150deg, #0b2a6b, #1456c8 75%, #2a78e0);
+        box-shadow: var(--shadow);
+        animation: cardIn 0.9s 0.1s ease both;
+      }
+      :root[data-theme="dark"] .verify-aside {
+        background: linear-gradient(150deg, #0a2147, #123c80 80%, #1a4fa3);
+      }
+      .verify-aside::before,
+      .verify-aside::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        pointer-events: none;
+      }
+      .verify-aside::before {
+        width: 260px;
+        height: 260px;
+        right: -90px;
+        top: -110px;
+        background: rgba(242, 140, 40, 0.32);
+        filter: blur(34px);
+      }
+      .verify-aside::after {
+        width: 240px;
+        height: 240px;
+        left: -60px;
+        bottom: -120px;
+        background: rgba(26, 154, 82, 0.3);
+        filter: blur(34px);
+      }
+      .verify-aside > * {
+        position: relative;
+        z-index: 1;
+      }
+
+      .aside-shield {
+        position: absolute !important;
+        right: 22px;
+        top: 22px;
+        width: 64px;
+        height: 64px;
+        display: grid;
+        place-items: center;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        backdrop-filter: blur(8px);
+        font-size: 26px;
+        animation: floatY 5s ease-in-out infinite;
+      }
+      @keyframes floatY {
+        50% {
+          transform: translateY(-8px);
+        }
+      }
+
+      .verify-aside .aside-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0 0 18px;
+        padding: 7px 13px;
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.1);
+        font-size: 11.5px;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+      .verify-aside .aside-tag::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #5df0b0;
+        box-shadow: 0 0 10px #5df0b0;
+        animation: blink 1.7s infinite;
+      }
+      @keyframes blink {
+        50% {
+          opacity: 0.3;
+        }
+      }
+
+      .verify-aside h2 {
+        margin: 0 0 14px;
+        max-width: 11em;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: clamp(28px, 3vw, 38px);
+        line-height: 1.08;
+        letter-spacing: -0.04em;
+        color: #fff;
+      }
+      .verify-aside h2 .grad {
+        background: linear-gradient(100deg, #ffc27a, #ffffff 55%, #8cf0c0);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation: shimmer 5s linear infinite;
+      }
+      @keyframes shimmer {
+        to {
+          background-position: 200% center;
+        }
+      }
+      .verify-aside > p {
+        margin: 0 0 26px;
+        color: rgba(255, 255, 255, 0.82);
+        line-height: 1.75;
+      }
+
+      .aside-steps {
+        display: grid;
+        gap: 12px;
+        margin: 0 0 22px;
+        padding: 0;
+        list-style: none;
+      }
+      .aside-steps li {
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+        padding: 14px 16px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(6px);
+        opacity: 0;
+        animation: slideIn 0.6s ease forwards;
+        transition:
+          transform 0.3s ease,
+          background 0.3s ease;
+      }
+      .aside-steps li:nth-child(1) {
+        animation-delay: 0.3s;
+      }
+      .aside-steps li:nth-child(2) {
+        animation-delay: 0.42s;
+      }
+      .aside-steps li:nth-child(3) {
+        animation-delay: 0.54s;
+      }
+      .aside-steps li:nth-child(4) {
+        animation-delay: 0.66s;
+      }
+      .aside-steps li:hover {
+        transform: translateX(6px);
+        background: rgba(255, 255, 255, 0.14);
+      }
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(-24px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      .aside-steps .dot {
+        flex: none;
+        width: 14px;
+        height: 14px;
+        margin-top: 4px;
+        border-radius: 50%;
+        box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.14);
+      }
+      .dot.valid {
+        background: #5df0b0;
+      }
+      .dot.soon {
+        background: #ffc27a;
+      }
+      .dot.expired {
+        background: #ff9a9a;
+      }
+      .dot.revoked {
+        background: #c9d3e6;
+      }
+      .aside-steps strong {
+        display: block;
+        font-size: 13.5px;
+        letter-spacing: 0.04em;
+      }
+      .aside-steps span {
+        display: block;
+        margin-top: 2px;
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.76);
+        line-height: 1.55;
+      }
+
+      .aside-tip {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        margin: 0 0 22px;
+        padding: 14px 16px;
+        border: 1px dashed rgba(255, 255, 255, 0.4);
+        border-radius: 16px;
+        font-size: 13.5px;
+        color: rgba(255, 255, 255, 0.9);
+      }
+      .aside-tip i {
+        margin-top: 3px;
+        color: #ffc27a;
+      }
+      .aside-tip b {
+        display: block;
+        font-size: 14.5px;
+        color: #fff;
+      }
+
+      .aside-note {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        margin: 0;
+        padding-top: 18px;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        font-size: 12px;
+        line-height: 1.6;
+        color: rgba(255, 255, 255, 0.75);
+      }
+      .aside-note i {
+        margin-top: 3px;
+        color: #ffc27a;
+      }
+
+      /* ---- Card ---- */
+      main .auth-card {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        padding: 40px;
+        border: 1px solid var(--border);
+        border-radius: 26px;
+        background: var(--panel);
+        color: var(--text);
+        box-shadow: var(--shadow);
+        animation: cardIn 0.9s ease both;
+      }
+      @keyframes cardIn {
+        from {
+          opacity: 0;
+          transform: translateY(30px) scale(0.98);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      main .auth-header {
+        margin-bottom: 28px;
+      }
+      main .auth-header.center {
+        text-align: center;
+      }
+
+      /* scanner icon */
+      .verify-icon {
+        position: relative;
+        width: 84px;
+        height: 84px;
+        display: grid;
+        place-items: center;
+        margin: 0 auto 20px;
+        border-radius: 24px;
+        overflow: hidden;
+        font-size: 34px;
+        color: #fff;
+        background: linear-gradient(135deg, var(--navy), var(--blue));
+        box-shadow: 0 16px 36px rgba(20, 86, 200, 0.35);
+      }
+      :root[data-theme="dark"] .verify-icon {
+        color: #03111d;
+        background: linear-gradient(135deg, var(--sky), #9fe9ff);
+      }
+      .verify-icon::after {
+        content: "";
+        position: absolute;
+        left: 8px;
+        right: 8px;
+        height: 3px;
+        border-radius: 3px;
+        background: var(--saffron);
+        box-shadow: 0 0 14px var(--saffron);
+        animation: scan 2.4s ease-in-out infinite;
+      }
+      @keyframes scan {
+        0%,
+        100% {
+          top: 12px;
+        }
+        50% {
+          top: calc(100% - 15px);
+        }
+      }
+
+      main .section-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0 0 14px;
+        padding: 7px 14px;
+        border: 1px solid rgba(20, 86, 200, 0.22);
+        border-radius: 999px;
+        background: rgba(20, 86, 200, 0.07);
+        color: var(--blue);
+        font-size: 12px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+      }
+      main .section-tag::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--green);
+        box-shadow: 0 0 10px var(--green);
+        animation: blink 1.7s infinite;
+      }
+
+      main .auth-header h1 {
+        margin: 0 0 8px;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: clamp(28px, 3.2vw, 38px);
+        letter-spacing: -0.035em;
+        color: var(--navy);
+      }
+      main .auth-header p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      /* ---- Field ---- */
+      main label {
+        font-size: 13.5px;
+        font-weight: 600;
+        color: var(--text-2);
+      }
+
+      .input-wrap {
+        position: relative;
+      }
+      .input-wrap > i {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--muted);
+        font-size: 15px;
+        pointer-events: none;
+        transition: color 0.2s ease;
+      }
+      .input-wrap:focus-within > i {
+        color: var(--blue);
+      }
+
+      main input {
+        width: 100%;
+        padding: 15px 16px;
+        border: 1.5px solid var(--border);
+        border-radius: 12px;
+        background: var(--field-bg);
+        color: var(--text);
+        font: inherit;
+        font-size: 16px;
+        letter-spacing: 0.02em;
+        transition:
+          border-color 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+      .input-wrap input {
+        padding-left: 44px;
+      }
+      main input::placeholder {
+        color: var(--muted);
+        opacity: 0.75;
+        letter-spacing: 0;
+      }
+      main input:hover {
+        border-color: rgba(20, 86, 200, 0.4);
+      }
+      main input:focus {
+        outline: none;
+        border-color: var(--blue);
+        box-shadow: 0 0 0 4px rgba(20, 86, 200, 0.16);
+      }
+
+      main .field-group {
+        margin-bottom: 18px;
+      }
+      main .auth-card .btn.full-width {
+        width: 100%;
+        padding: 15px 22px;
+        font-size: 15px;
+      }
+
+      /* ---- Result ---- */
+      main #verifyResult {
+        margin-top: 20px;
+      }
+      main #verifyResult:not(.hidden) {
+        display: block;
+        position: relative;
+        padding: 18px 18px 18px 64px;
+        border: 1px solid color-mix(in srgb, var(--blue) 30%, transparent);
+        border-radius: 16px;
+        background: var(--surface-2);
+        color: var(--text);
+        font-size: 14.5px;
+        font-weight: 500;
+        line-height: 1.65;
+        animation: resultIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+      }
+      @keyframes resultIn {
+        from {
+          opacity: 0;
+          transform: translateY(18px) scale(0.98);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      main #verifyResult::before {
+        content: "\f05a";
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
+        position: absolute;
+        left: 18px;
+        top: 16px;
+        width: 34px;
+        height: 34px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        background: color-mix(in srgb, currentColor 16%, transparent);
+        font-size: 16px;
+      }
+      main #verifyResult.success {
+        background: var(--success-soft);
+        border-color: color-mix(in srgb, var(--success) 35%, transparent);
+        color: var(--success);
+      }
+      main #verifyResult.success::before {
+        content: "\f058";
+      }
+      main #verifyResult.error {
+        background: var(--danger-soft);
+        border-color: color-mix(in srgb, var(--danger) 35%, transparent);
+        color: var(--danger);
+      }
+      main #verifyResult.error::before {
+        content: "\f057";
+      }
+      main #verifyResult.warning {
+        background: var(--warning-soft);
+        border-color: color-mix(in srgb, var(--warning) 35%, transparent);
+        color: var(--warning);
+      }
+      main #verifyResult.warning::before {
+        content: "\f071";
+      }
+      main #verifyResult p {
+        margin: 4px 0 0;
+      }
+      main #verifyResult p:first-child {
+        margin-top: 0;
+      }
+      main #verifyResult ul {
+        margin: 8px 0 0;
+        padding-left: 18px;
+      }
+      main #verifyResult table {
+        width: 100%;
+        margin-top: 10px;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+      main #verifyResult td,
+      main #verifyResult th {
+        padding: 7px 4px;
+        text-align: left;
+        border-bottom: 1px solid
+          color-mix(in srgb, currentColor 18%, transparent);
+      }
+
+      /* footer */
+      .site-footer {
+        border-top: 1px solid var(--border);
+        background: var(--surface);
+      }
+      .site-footer .foot {
+        width: min(1240px, 100% - 40px);
+        min-height: 80px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .site-footer a {
+        color: var(--text-2);
+        text-decoration: none;
+        transition: color 0.2s ease;
+      }
+      .site-footer a:hover {
+        color: var(--blue);
+      }
+
+      /* =================== RESPONSIVE =================== */
+      @media (max-width: 1180px) {
+        #siteNav .subeyebrow {
+          display: none;
+        }
+        #siteNav .em-wrap {
+          gap: 16px;
+        }
+      }
+
+      @media (max-width: 960px) {
+        .verify-layout {
+          grid-template-columns: 1fr;
+        }
+        .verify-aside {
+          position: relative;
+          top: 0;
+          order: 2;
+        }
+        .verify-main {
+          order: 1;
+        }
+      }
+
+      @media (max-width: 860px) {
+        #siteNav .em-wrap {
+          justify-content: space-between;
+        }
+        #siteNav .nav-sep {
+          display: none;
+        }
+        #siteNav .nav-actions {
+          margin-left: 0;
+        }
+        #siteNav .nav-actions .btn {
+          display: none;
+        }
+        .menu-btn {
+          display: grid;
+        }
+        #siteNav .main-nav {
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 100%;
+          flex-direction: column;
+          align-items: stretch;
+          justify-content: flex-start;
+          gap: 2px;
+          padding: 12px 20px 18px;
+          background: var(--surface);
+          border-bottom: 1px solid var(--border);
+          box-shadow: 0 20px 40px rgba(10, 40, 90, 0.15);
+          transform: translateY(-12px);
+          opacity: 0;
+          visibility: hidden;
+          transition: all 0.3s ease;
+        }
+        #siteNav .main-nav.open {
+          transform: none;
+          opacity: 1;
+          visibility: visible;
+        }
+        #siteNav .main-nav a:not(.btn) {
+          display: block;
+          padding: 13px 8px;
+        }
+        #siteNav .main-nav a.mobile-only {
+          display: block;
+        }
+      }
+
+      @media (max-width: 640px) {
+        main.auth-screen {
+          padding: 28px 0 56px;
+        }
+        main .auth-card {
+          padding: 26px 20px;
+          border-radius: 22px;
+        }
+        .verify-aside {
+          padding: 28px 22px 32px;
+          border-radius: 22px;
+        }
+        .aside-shield {
+          display: none;
+        }
+        main #verifyResult:not(.hidden) {
+          padding-left: 58px;
+        }
+        .site-footer .foot {
+          flex-direction: column;
+          align-items: flex-start;
+          padding-block: 22px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        #siteNav .brand-block > div:last-child {
+          display: none;
+        }
+        #siteNav .em-wrap {
+          gap: 10px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+        .aside-steps li {
+          opacity: 1;
+        }
+      }
+    </style>
   </head>
+
   <body class="auth-body">
-    <main class="auth-screen">
-      <section class="card auth-card verify-card">
-        <div class="auth-header center">
-          <p class="section-tag">Public verification</p>
-          <h1 data-i18n="certificate.verify">Verify certificate</h1>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <div class="notice-strip" role="note">
+      <i class="fa-solid fa-circle-info"></i>
+      Demonstration service &mdash; not an official government registry or
+      government-issued certificate.
+    </div>
+
+    <!-- =====================================================
+         NAVBAR
+         ===================================================== -->
+    <nav class="site-nav" id="siteNav" aria-label="Main navigation">
+      <div class="topbar container em-wrap">
+        <a
+          href="./index.html"
+          class="brand-block"
+          aria-label="e-Metrology home"
+        >
+          <div class="brand-mark" aria-hidden="true">e</div>
+          <div>
+            <p class="eyebrow">e-Metrology</p>
+            <p class="subeyebrow">
+              Weighing and measuring instrument verification
+            </p>
+          </div>
+        </a>
+
+        <div class="main-nav" id="mainNav">
+          <a href="./index.html">Home</a>
+          <a
+            href="./verify.html"
+            class="active"
+            aria-current="page"
+            data-i18n="nav.verify"
+            >Verify Certificate</a
+          >
+          <a href="./login.html" class="mobile-only" data-i18n="nav.login"
+            >Login</a
+          >
+          <a href="./register.html" class="mobile-only" data-i18n="nav.register"
+            >Register</a
+          >
         </div>
 
-        <div class="field-group">
-          <label for="certificateNumber">Certificate number</label>
-          <input
-            id="certificateNumber"
-            type="text"
-            placeholder="Enter certificate number"
-          />
+        <div class="nav-actions">
+          <button
+            type="button"
+            class="icon-btn"
+            id="themeToggle"
+            aria-label="Toggle light and dark theme"
+          >
+            <i class="fa-solid fa-circle-half-stroke"></i>
+          </button>
+          <span class="nav-sep" aria-hidden="true"></span>
+          <a href="./login.html" class="btn btn-secondary">
+            <i class="fa-solid fa-right-to-bracket"></i>
+            <span data-i18n="nav.login">Login</span>
+          </a>
+          <a href="./register.html" class="btn btn-primary">
+            <i class="fa-solid fa-user-plus"></i>
+            <span data-i18n="nav.register">Register</span>
+          </a>
+          <button
+            type="button"
+            class="icon-btn menu-btn"
+            id="menuBtn"
+            aria-label="Open menu"
+            aria-expanded="false"
+            aria-controls="mainNav"
+          >
+            <i class="fa-solid fa-bars"></i>
+          </button>
         </div>
-        <button id="verifyButton" class="btn btn-primary full-width">
-          <span data-i18n="common.verify">Verify</span>
-        </button>
+      </div>
+    </nav>
 
-        <div id="verifyResult" class="alert hidden" aria-live="polite"></div>
-      </section>
+    <main class="auth-screen" id="main-content">
+      <div class="verify-layout">
+        <!-- ================= VERIFY COLUMN ================= -->
+        <div class="verify-main">
+          <section class="card auth-card verify-card">
+            <div class="auth-header center">
+              <div class="verify-icon" aria-hidden="true">
+                <i class="fa-solid fa-qrcode"></i>
+              </div>
+              <p class="section-tag">Public verification</p>
+              <h1 data-i18n="certificate.verify">Verify certificate</h1>
+              <p>Enter the certificate number to check its current status.</p>
+            </div>
+
+            <div class="field-group">
+              <label for="certificateNumber">Certificate number</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-hashtag" aria-hidden="true"></i>
+                <input
+                  id="certificateNumber"
+                  type="text"
+                  autocomplete="off"
+                  spellcheck="false"
+                  placeholder="Enter certificate number"
+                />
+              </div>
+            </div>
+            <button id="verifyButton" class="btn btn-primary full-width">
+              <span data-i18n="common.verify">Verify</span>
+            </button>
+
+            <div
+              id="verifyResult"
+              class="alert hidden"
+              aria-live="polite"
+            ></div>
+          </section>
+        </div>
+
+        <!-- ================= INFO COLUMN ================= -->
+        <aside class="verify-aside" aria-label="About verification">
+          <div class="aside-shield" aria-hidden="true">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+
+          <p class="aside-tag">Open to everyone</p>
+          <h2>Check any certificate. <span class="grad">In seconds.</span></h2>
+          <p>
+            No account needed. Enter a certificate number and see whether it is
+            valid, expiring soon, expired or revoked.
+          </p>
+
+          <ul class="aside-steps">
+            <li>
+              <span class="dot valid"></span>
+              <div>
+                <strong>VALID</strong>
+                <span>The certificate is currently valid.</span>
+              </div>
+            </li>
+            <li>
+              <span class="dot soon"></span>
+              <div>
+                <strong>EXPIRING SOON</strong>
+                <span>Still valid, but close to its expiry date.</span>
+              </div>
+            </li>
+            <li>
+              <span class="dot expired"></span>
+              <div>
+                <strong>EXPIRED</strong>
+                <span>The validity period has ended.</span>
+              </div>
+            </li>
+            <li>
+              <span class="dot revoked"></span>
+              <div>
+                <strong>REVOKED</strong>
+                <span>The certificate has been withdrawn.</span>
+              </div>
+            </li>
+          </ul>
+
+          <div class="aside-tip">
+            <i class="fa-solid fa-lightbulb"></i>
+            <span>
+              <b>Where to find the number</b>
+              It is shown on the digital certificate, next to its QR code.
+            </span>
+          </div>
+
+          <p class="aside-note">
+            <i class="fa-solid fa-circle-info"></i>
+            <span>
+              System-generated demonstration service. Not an official government
+              registry or government-issued certificate.
+            </span>
+          </p>
+        </aside>
+      </div>
     </main>
+
+    <footer class="site-footer">
+      <div class="foot">
+        <span>e-Metrology demonstration</span>
+        <a href="./login.html">Sign in</a>
+        <a href="./register.html">Create account</a>
+      </div>
+    </footer>
 
     <script src="./js/i18n.js"></script>
     <script src="./js/api.js"></script>
     <script src="./js/verify.js"></script>
+
+    <!-- UI-only enhancements (no effect on verification logic) -->
+    <script>
+      (() => {
+        /* Navbar: scrolled state + mobile menu */
+        const nav = document.getElementById("siteNav");
+        const onScroll = () =>
+          nav.classList.toggle("scrolled", window.scrollY > 20);
+        window.addEventListener("scroll", onScroll, { passive: true });
+        onScroll();
+
+        const menuBtn = document.getElementById("menuBtn");
+        const mainNav = document.getElementById("mainNav");
+        const setMenu = (open) => {
+          mainNav.classList.toggle("open", open);
+          menuBtn.setAttribute("aria-expanded", open);
+          menuBtn.querySelector("i").className = open
+            ? "fa-solid fa-xmark"
+            : "fa-solid fa-bars";
+        };
+        menuBtn.addEventListener("click", () =>
+          setMenu(!mainNav.classList.contains("open")),
+        );
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") setMenu(false);
+        });
+
+        /* Theme toggle (shared with the other pages) */
+        const root = document.documentElement;
+        const meta = document.querySelector('meta[name="theme-color"]');
+        const apply = (t) => {
+          root.setAttribute("data-theme", t);
+          if (meta)
+            meta.setAttribute("content", t === "dark" ? "#07111f" : "#f3f8ff");
+        };
+        apply(root.getAttribute("data-theme") || "light");
+        document.getElementById("themeToggle").addEventListener("click", () => {
+          const next =
+            root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+          apply(next);
+          try {
+            localStorage.setItem("em-theme", next);
+          } catch (e) {}
+        });
+      })();
+    </script>
   </body>
 </html>
